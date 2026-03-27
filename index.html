@@ -2,996 +2,1015 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Challenger Case Explorer — Ethics Beyond Boundaries</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: The Telescope — Ethics Beyond Boundaries</title>
 <style>
 :root{
-  --teal:#0f766e;--teal-dark:#0d5e57;--teal-mid:#14b8a6;--teal-light:#ccfbf1;
+  --slate:#1e293b;--slate-mid:#334155;--slate-light:#f1f5f9;
+  --red:#991b1b;--red-mid:#dc2626;--red-light:#fee2e2;--red-pale:#fff5f5;
+  --gold:#C9A84C;--gold-dark:#92650A;--gold-light:#FEF3C7;
+  --navy:#1A2744;--sky:#4A7FB5;--sky-light:#dbeafe;
+  --success:#16a34a;--success-light:#dcfce7;
+  --violet:#5b21b6;--violet-light:#ede9fe;
   --amber:#f59e0b;--amber-dark:#92400e;--amber-light:#fef3c7;
-  --navy:#1a2744;--ink:#1f2937;--muted:#6b7280;
-  --border:#e5e7eb;--paper:#f9fafb;--white:#ffffff;
-  --sky:#1e3a8a;--sky-light:#dbeafe;--sky-mid:#3b82f6;
-  --green:#166534;--green-light:#dcfce7;--green-mid:#16a34a;
-  --orange:#9a3412;--orange-light:#ffedd5;
-  --red:#dc2626;--red-light:#fee2e2;
+  --ink:#1f2937;--muted:#6b7280;--border:#e5e7eb;--paper:#f9fafb;
+  font-size:18px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Cormorant Garamond','Georgia',serif;background:linear-gradient(135deg,#0a1628 0%,#112240 50%,#0a1628 100%);min-height:100vh;color:var(--ink)}
-.app-wrap{max-width:960px;margin:0 auto;padding:1rem}
+body{font-family:'Georgia','Times New Roman',serif;background:linear-gradient(135deg,#1e293b 0%,#991b1b 40%,#1e293b 100%);background-attachment:fixed;min-height:100vh;color:var(--ink);line-height:1.7;padding-bottom:3rem}
+.glass{background:rgba(255,255,255,.97);backdrop-filter:blur(10px)}
+.glass-dark{background:rgba(30,41,59,.96);backdrop-filter:blur(10px);color:#fff}
+.fade-in{animation:fadeIn .6s ease-out both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-/* ── HEADER ── */
-.app-header{text-align:center;padding:2rem 1rem 1.25rem;color:white}
-.ch-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(20,184,166,.7);margin-bottom:.4rem}
-.app-header h1{font-size:2rem;font-weight:700;color:white;margin-bottom:.35rem;line-height:1.2}
-.app-header .sub{font-size:.95rem;color:rgba(255,255,255,.5);font-style:italic}
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{position:fixed;top:0;left:0;width:auto;height:auto;padding:.5rem 1rem;background:var(--red-mid);color:#fff;z-index:9999;border-radius:0 0 .4rem 0}
 
-/* ── TABS ── */
-.tab-nav{display:flex;gap:.25rem;background:rgba(255,255,255,.06);border-radius:.75rem;padding:.3rem;margin-bottom:1rem;flex-wrap:wrap}
-.tab-btn{padding:.4rem .75rem;border:none;background:transparent;color:rgba(255,255,255,.5);font-family:'Cormorant Garamond',serif;font-size:.85rem;border-radius:.4rem;cursor:pointer;transition:.18s;white-space:nowrap}
-.tab-btn:hover{color:white;background:rgba(255,255,255,.08)}
-.tab-btn.active{background:var(--teal-dark);color:white;font-weight:600}
-.tab-btn.critical-tab{border-left:3px solid rgba(220,38,38,.6)}
+header{position:sticky;top:0;z-index:50;box-shadow:0 4px 24px rgba(0,0,0,.45)}
+.header-inner{max-width:72rem;margin:0 auto;padding:.875rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.header-titles h1{font-size:1.3rem;font-weight:700;margin-bottom:.1rem}
+.header-titles p{font-size:.78rem;opacity:.6;font-style:italic}
+.header-right{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.prf-badge{font-size:.75rem;font-family:'Courier New',monospace;color:rgba(255,255,255,.45)}
+.prf-file-label{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:.4rem;font-size:.75rem;font-family:'Courier New',monospace;cursor:pointer;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.09);color:rgba(255,255,255,.7);transition:.2s}
+.prf-file-label:hover{background:rgba(255,255,255,.18);color:#fff}
+.prog-wrap{display:flex;align-items:center;gap:.6rem}
+.prog-label{font-size:.72rem;font-family:'Courier New',monospace;opacity:.5}
+.prog-track{width:110px;height:6px;background:rgba(255,255,255,.14);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--red-mid);border-radius:3px;transition:width .4s ease}
 
-/* ── PANES ── */
-.tab-pane{display:none;background:white;border-radius:1rem;padding:2rem;box-shadow:0 4px 28px rgba(0,0,0,.2)}
-.tab-pane.active{display:block;animation:fadeIn .22s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.page{max-width:72rem;margin:1.5rem auto;padding:0 1rem}
 
-/* ── TYPOGRAPHY ── */
-h2{font-size:1.55rem;font-weight:700;color:var(--teal-dark);margin-bottom:.7rem;padding-bottom:.35rem;border-bottom:3px solid var(--teal-mid)}
-h3{font-size:1.15rem;font-weight:700;color:var(--navy);margin:1.2rem 0 .45rem}
-h4{font-size:.97rem;font-weight:700;color:var(--amber-dark);margin:.85rem 0 .3rem}
-p{line-height:1.75;margin-bottom:.85rem;font-size:.96rem;color:var(--ink)}
-strong{color:var(--navy)}
-ul{margin:.3rem 0 .7rem 1.3rem;line-height:1.8}
-ul li{font-size:.92rem;color:var(--ink);margin-bottom:.2rem}
+.tab-nav{display:flex;gap:.3rem;flex-wrap:wrap;background:rgba(30,41,59,.7);backdrop-filter:blur(8px);border-radius:.75rem;padding:.45rem;margin-bottom:1.25rem}
+.tab-btn{padding:.5rem .9rem;border:none;background:transparent;color:rgba(255,255,255,.5);font-family:'Georgia',serif;font-size:.83rem;border-radius:.45rem;cursor:pointer;transition:.2s;white-space:nowrap;position:relative}
+.tab-btn:hover{background:rgba(185,28,28,.25);color:#fff}
+.tab-btn.active{background:rgba(185,28,28,.35);color:#fff;font-weight:700}
+.tab-btn.completed::after{content:'✓';position:absolute;top:2px;right:4px;font-size:.55rem;color:var(--gold)}
+.tab-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.tab-pane{display:none}.tab-pane.active{display:block}
 
-/* ── CARDS ── */
-.card{border-radius:.7rem;padding:1.2rem;margin-bottom:1rem}
-.card-teal{background:var(--teal-light);border-left:4px solid var(--teal-mid)}
-.card-amber{background:var(--amber-light);border-left:4px solid var(--amber)}
-.card-navy{background:var(--navy);color:white;padding:1.35rem}
-.card-navy p,.card-navy li{color:rgba(255,255,255,.8)}
-.card-navy h3,.card-navy h4{color:var(--teal-mid)}
-.card-sky{background:var(--sky-light);border-left:4px solid var(--sky-mid)}
-.card-green{background:var(--green-light);border-left:4px solid var(--green-mid)}
-.card-red{background:var(--red-light);border-left:4px solid var(--red)}
+.card{border-radius:.875rem;padding:1.75rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.card-red{background:var(--red-light);border-left:4px solid var(--red-mid)}
+.card-gold{background:var(--gold-light);border-left:4px solid var(--gold)}
+.card-sky{background:var(--sky-light);border-left:4px solid var(--sky)}
+.card-violet{background:var(--violet-light);border-left:4px solid var(--violet)}
+.card-success{background:var(--success-light);border-left:4px solid var(--success)}
+.card-dark{background:var(--slate);color:#fff;border-radius:.875rem;padding:1.75rem;margin-bottom:1.25rem}
+.card-quote{background:var(--paper);border-left:4px solid var(--gold);padding:1.25rem 1.5rem;border-radius:0 .5rem .5rem 0;font-style:italic;font-size:1.0rem;margin:1rem 0;color:var(--gold-dark)}
 
-/* ── BLOCKQUOTE ── */
-blockquote{background:var(--amber-light);border-left:4px solid var(--amber);border-radius:0 .5rem .5rem 0;padding:.9rem 1.1rem;margin:1rem 0;font-style:italic;color:var(--amber-dark);font-size:.92rem}
-blockquote cite{display:block;margin-top:.35rem;font-style:normal;font-size:.78rem;font-weight:600;color:var(--muted)}
+h2{font-size:1.5rem;color:var(--slate);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:3px solid var(--red-mid)}
+h3{font-size:1.15rem;color:var(--red);margin-top:1.5rem;margin-bottom:.6rem;font-weight:700}
+h4{font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+p{margin-bottom:.75rem}ul,ol{margin-left:1.5rem;margin-bottom:.75rem}li{margin-bottom:.35rem}
 
-/* ── TIMELINE ── */
-.event-nav{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1.25rem}
-.event-btn{padding:.38rem .8rem;border:1px solid var(--border);border-radius:.4rem;background:var(--paper);color:var(--muted);font-family:'Cormorant Garamond',serif;font-size:.84rem;cursor:pointer;transition:.15s}
-.event-btn:hover{border-color:var(--teal-mid);color:var(--teal-dark)}
-.event-btn.active{background:var(--teal-dark);color:white;border-color:var(--teal-dark);font-weight:600}
-.event-btn.crit{border-left:3px solid var(--red)}
-.event-date{font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--teal-dark);margin-bottom:.2rem}
-.event-content{animation:fadeIn .2s ease}
-.sub-tab-nav{display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:1rem;border-bottom:2px solid var(--border);padding-bottom:.6rem}
-.sub-tab-btn{padding:.3rem .7rem;border:none;background:transparent;color:var(--muted);font-family:'Cormorant Garamond',serif;font-size:.84rem;border-radius:.35rem;cursor:pointer;transition:.15s}
-.sub-tab-btn:hover{color:var(--teal-dark);background:var(--teal-light)}
-.sub-tab-btn.active{background:var(--teal-dark);color:white;font-weight:600}
-.sub-pane{display:none}
-.sub-pane.active{display:block;animation:fadeIn .18s ease}
+/* Copernican diagram */
+.copernicus-diagram{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin:1.25rem 0}
+.diagram-box{border-radius:.5rem;padding:1.25rem;text-align:center}
+.diagram-label{font-size:.72rem;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.4rem}
+.diagram-title{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.diagram-desc{font-size:.82rem;line-height:1.5}
+.diagram-os1{background:var(--red-light);border:2px solid var(--red-mid);color:var(--red)}
+.diagram-os2{background:var(--success-light);border:2px solid var(--success);color:var(--success)}
+.diagram-arrow{font-size:2rem;color:var(--gold);text-align:center}
 
-/* ── PREDICTION RETRIEVAL ── */
-.pred-retrieval{background:rgba(15,118,110,.06);border:1px solid rgba(15,118,110,.2);border-radius:.7rem;padding:1rem 1.1rem;margin-bottom:1rem}
-.pred-retrieval-label{font-family:'JetBrains Mono',monospace;font-size:.67rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal-dark);margin-bottom:.35rem}
-.pred-retrieval-text{font-size:.88rem;font-style:italic;color:var(--ink);line-height:1.6;border-left:3px solid var(--amber);padding-left:.75rem}
-.pred-retrieval-empty{font-size:.84rem;color:var(--muted)}
+/* Anomaly accordion */
+.accord{margin-bottom:.5rem;border-radius:.5rem;overflow:hidden;border:2px solid var(--border)}
+.accord-btn{width:100%;padding:.875rem 1.25rem;background:var(--paper);border:none;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:'Georgia',serif;font-size:.95rem;font-weight:700;transition:.2s}
+.accord-btn:hover{background:var(--slate-light)}
+.accord-btn:focus-visible{outline:2px solid var(--red-mid);outline-offset:-2px}
+.accord-btn[aria-expanded=true]{background:var(--red-light);color:var(--red)}
+.accord-icon{font-size:1.1rem;transition:transform .25s;flex-shrink:0}
+.accord-btn[aria-expanded=true] .accord-icon{transform:rotate(90deg)}
+.accord-body{display:none;padding:1rem 1.25rem;background:#fff;border-top:1px solid var(--border)}
+.accord-body.open{display:block;animation:fadeIn .3s ease-out}
+.theory-chip{display:inline-block;padding:.2rem .65rem;border-radius:2rem;font-size:.72rem;font-family:'Courier New',monospace;font-weight:700;margin-bottom:.4rem}
+.tc-v{background:#dbeafe;color:#1e3a8a}.tc-d{background:#ede9fe;color:#4c1d95}
+.tc-c{background:#fef3c7;color:#92400e}.tc-ca{background:#dcfce7;color:#166534}
 
-/* ── SIMULATION ── */
-.ucp-panel{background:var(--paper);border:1px solid var(--border);border-radius:.7rem;padding:1.25rem;margin-top:1rem}
-.ucp-config{background:rgba(26,39,68,.05);border:1px solid rgba(26,39,68,.12);border-radius:.5rem;padding:.9rem 1rem;margin-bottom:1rem}
-.ucp-config-label{font-family:'JetBrains Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;color:var(--amber-dark);margin-bottom:.35rem}
-.ucp-config-title{font-size:.87rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
-.ucp-config-table{width:100%;border-collapse:collapse;font-size:.79rem;margin-bottom:.5rem}
-.ucp-config-table td{padding:.25rem .4rem;vertical-align:top;border-bottom:1px solid var(--border)}
-.ucp-config-table tr:last-child td{border-bottom:none}
-.cfg-key{font-family:'JetBrains Mono',monospace;color:var(--muted);width:38%}
-.cfg-val{color:var(--ink);line-height:1.5}
-.scaffold{background:var(--teal-light);border:1px solid rgba(15,118,110,.2);border-radius:.4rem;padding:.6rem .85rem;margin-bottom:.85rem}
-.scaffold-label{font-family:'JetBrains Mono',monospace;font-size:.63rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal-dark);margin-bottom:.35rem}
-.scaffold-item{font-size:.8rem;color:var(--ink);line-height:1.6;padding-left:.65rem;border-left:2px solid var(--teal-mid);margin-bottom:.25rem}
-.scaffold-item strong{color:var(--teal-dark)}
-.ucp-btn-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem}
-.ucp-run-btn{background:var(--teal-dark);color:white;border:none;padding:.6rem 1.4rem;border-radius:.45rem;font-size:.92rem;font-weight:600;cursor:pointer;transition:.15s;font-family:'Cormorant Garamond',serif;display:flex;align-items:center;gap:.5rem}
-.ucp-run-btn:hover{background:var(--teal)}
-.ucp-run-btn:disabled{background:var(--muted);cursor:not-allowed}
-.ucp-run-btn.biobond{background:#1e3a8a}
-.ucp-run-btn.biobond:hover{background:#1e40af}
-.ucp-spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.ucp-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin:.75rem 0}
-.ucp-metric{background:white;border:1px solid var(--border);border-radius:.45rem;padding:.5rem .65rem;text-align:center}
-.ucp-metric .m-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.15rem}
-.ucp-metric .m-val{font-size:1.2rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--teal-dark)}
-.ucp-metric .m-val.gap{color:var(--amber-dark)}
-.ucp-metric .m-val.supp{color:var(--red)}
-.ucp-bars{margin:.6rem 0}
-.ucp-bar-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem}
-.ucp-bar-label{font-size:.75rem;font-family:'JetBrains Mono',monospace;color:var(--muted);min-width:140px}
-.ucp-bar-track{flex:1;height:14px;background:var(--border);border-radius:3px;overflow:hidden}
-.ucp-bar-fill{height:100%;border-radius:3px;transition:width .6s}
-.ucp-narrative{background:var(--sky-light);border-left:3px solid var(--sky-mid);padding:.75rem 1rem;border-radius:0 .4rem .4rem 0;font-size:.83rem;color:var(--ink);line-height:1.65;margin-top:.6rem}
-.ucp-error{background:var(--red-light);border:1px solid var(--red);border-radius:.45rem;padding:.65rem;font-size:.82rem;color:var(--red);margin-top:.5rem;display:none}
-.ucp-results{margin-top:.75rem}
-.sim-compare{background:var(--paper);border:1px solid var(--border);border-radius:.5rem;overflow:hidden;margin-top:1rem}
-.sim-compare-head{background:var(--navy);color:white;padding:.55rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
-.sim-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.sim-compare-col{padding:.85rem 1rem}
-.sim-compare-col:first-child{border-right:1px solid var(--border)}
-.sim-compare-col h4{font-size:.84rem;margin-bottom:.5rem}
-.sim-metric-row{display:flex;justify-content:space-between;align-items:center;padding:.2rem 0;border-bottom:1px solid var(--border);font-size:.79rem}
-.sim-metric-row:last-child{border-bottom:none}
-.sim-metric-key{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:.72rem}
-.sim-metric-val{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+/* PRF six dimensions */
+.prf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.875rem;margin:1rem 0}
+.prf-dim{background:var(--paper);border-radius:.5rem;padding:1.1rem;border-top:4px solid var(--red-mid)}
+.prf-dim-label{font-size:.7rem;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:.3rem}
+.prf-dim-title{font-size:.9rem;font-weight:700;color:var(--slate);margin-bottom:.4rem}
+.prf-dim-text{font-size:.82rem;color:var(--muted);line-height:1.55}
 
-/* ── SCENARIO CHOICE ── */
-.choice-grid{display:grid;gap:.5rem;margin:1rem 0}
-.scenario-choice{background:var(--paper);border:1px solid var(--border);border-radius:.5rem;padding:.75rem 1rem;cursor:pointer;transition:.15s;text-align:left;width:100%}
-.scenario-choice:hover{border-color:var(--teal-mid);background:var(--teal-light)}
-.scenario-choice.selected{border-color:var(--teal-dark);background:var(--teal-light)}
-.choice-title{font-weight:700;font-size:.9rem;color:var(--navy);margin-bottom:.2rem}
-.choice-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
-.choice-feedback{background:var(--sky-light);border-left:4px solid var(--sky-mid);border-radius:0 .5rem .5rem 0;padding:.85rem 1rem;margin-top:.75rem;font-size:.86rem;line-height:1.65;display:none}
+/* Gap analysis */
+.prediction-display{background:var(--slate);border-radius:.75rem;padding:1.25rem;margin-bottom:1.25rem}
+.pred-eyebrow{font-size:.7rem;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.45);margin-bottom:.4rem}
+.pred-text{font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.6;font-style:italic;border-left:3px solid var(--gold);padding-left:.875rem}
+.pred-empty{font-size:.85rem;color:rgba(255,255,255,.4);font-style:italic}
 
-/* ── JOURNAL ── */
-.journal-q{background:var(--paper);border:1px solid var(--border);border-radius:.6rem;padding:1rem;margin-bottom:1rem}
-.journal-q .q-label{font-family:'JetBrains Mono',monospace;font-size:.69rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal-dark);margin-bottom:.38rem}
-.journal-q p{font-size:.87rem;margin-bottom:.45rem}
-textarea.jta{width:100%;min-height:95px;border:1px solid var(--border);border-radius:.38rem;padding:.6rem;font-family:'Cormorant Garamond',serif;font-size:.9rem;line-height:1.6;resize:vertical;color:var(--ink)}
-textarea.jta:focus{outline:none;border-color:var(--teal-mid)}
-textarea.jta.q5{min-height:140px;border-color:var(--amber);border-width:2px}
-.save-note{font-size:.7rem;color:var(--green-mid);font-family:'JetBrains Mono',monospace;height:1.1rem;opacity:0;transition:.3s}
+.metric-entry{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin:1rem 0}
+.metric-input-box{background:var(--paper);border-radius:.5rem;padding:1rem}
+.metric-input-label{font-size:.75rem;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:.4rem;display:block}
+.metric-input{width:100%;padding:.5rem .75rem;border:2px solid var(--border);border-radius:.4rem;font-family:'Courier New',monospace;font-size:1.1rem;text-align:center;transition:.2s}
+.metric-input:focus{outline:none;border-color:var(--red-mid);background:var(--red-pale)}
+
+.gap-result-box{border-radius:.5rem;padding:1.1rem;margin:.5rem 0;display:none}
+.gap-close{background:var(--success-light);border:2px solid #86efac}
+.gap-medium{background:var(--amber-light);border:2px solid #fcd34d}
+.gap-far{background:var(--red-light);border:2px solid #fca5a5}
+.gap-result-label{font-size:.72rem;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:.25rem}
+.gap-close .gap-result-label{color:var(--success)}.gap-medium .gap-result-label{color:var(--amber-dark)}.gap-far .gap-result-label{color:var(--red)}
+.gap-result-text{font-size:.88rem;line-height:1.6}
+
+/* Simulation bridge */
+.sim-bridge{background:var(--navy);border-radius:.875rem;padding:1.75rem;margin:1.25rem 0;text-align:center}
+.sim-bridge h3{color:var(--gold);margin-top:0;margin-bottom:.75rem;font-size:1.2rem}
+.sim-bridge p{color:rgba(255,255,255,.75);font-size:.9rem;margin-bottom:1rem;line-height:1.65}
+.sim-link-btn{display:inline-block;padding:.75rem 2rem;background:var(--red-mid);color:#fff;border:none;border-radius:.5rem;font-family:'Georgia',serif;font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s}
+.sim-link-btn:hover{background:var(--red)}
+.sim-link-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.sim-params{background:rgba(255,255,255,.07);border-radius:.4rem;padding:.875rem;margin-top:.875rem;text-align:left;font-family:'Courier New',monospace;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.8}
+.sim-param-label{color:rgba(255,255,255,.4);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+
+/* Journal */
+.journal-box{background:var(--amber-light);border-left:4px solid var(--amber);border-radius:.5rem;padding:1.25rem 1.5rem;margin:1rem 0}
+.journal-box h4{color:var(--amber-dark);margin-bottom:.5rem}
+.journal-ta{width:100%;min-height:90px;padding:.7rem .875rem;border:1px solid #d97706;border-radius:.4rem;font-family:'Georgia',serif;font-size:.9rem;resize:vertical;background:rgba(255,255,255,.85);line-height:1.6}
+.journal-ta:focus{outline:none;border-color:var(--amber-dark);background:#fff}
+.save-note{font-size:.72rem;color:var(--success);opacity:0;transition:.3s;height:.9rem;margin-top:.2rem}
 .save-note.show{opacity:1}
 
-/* ── STATS BOX ── */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
-.stat-box{background:white;border:1px solid var(--border);border-radius:.5rem;padding:.85rem;text-align:center}
-.stat-box .stat-val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--red);margin-bottom:.2rem}
-.stat-box .stat-label{font-size:.76rem;color:var(--muted);line-height:1.4}
+/* Buttons */
+.btn{padding:.65rem 1.5rem;border:none;border-radius:.5rem;font-family:'Georgia',serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:.2s}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn-red{background:var(--red-mid);color:#fff}.btn-red:hover{background:var(--red)}
+.btn-gold{background:var(--gold-dark);color:#fff}.btn-gold:hover{background:var(--slate)}
+.btn-lg{padding:.8rem 2.5rem;font-size:1rem;width:100%;margin-top:.75rem}
+.section-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.75rem;padding-top:1rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.section-nav-btn{padding:.55rem 1.25rem;border:2px solid var(--red-mid);background:transparent;color:var(--red-mid);border-radius:.4rem;font-family:'Georgia',serif;font-size:.88rem;cursor:pointer;transition:.2s}
+.section-nav-btn:hover{background:var(--red-light)}
+.section-nav-btn:focus-visible{outline:2px solid var(--red-mid);outline-offset:2px}
+.section-nav-btn.primary{background:var(--red-mid);color:#fff}
+.section-nav-btn.primary:hover{background:var(--red)}
 
-/* ── MEMO BOX ── */
-.memo-box{background:#fffbeb;border:2px solid var(--amber);border-radius:.6rem;padding:1.1rem 1.3rem;margin:1rem 0;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.7;color:#1a1a1a}
-.memo-box .memo-header{font-weight:700;margin-bottom:.5rem;color:var(--amber-dark)}
+.completion-card{background:var(--slate);color:#fff;border-radius:.875rem;padding:2rem;text-align:center;margin-top:1.5rem}
+.completion-card h3{color:var(--gold);margin-top:0}
 
-/* ── FORWARD PULL BUILDER ── */
-.fp-field{margin-bottom:.85rem}
-.fp-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal-dark);margin-bottom:.3rem}
-.fp-input{width:100%;min-height:75px;border:1px solid var(--border);border-radius:.38rem;padding:.55rem .7rem;font-family:'Cormorant Garamond',serif;font-size:.9rem;line-height:1.6;resize:vertical;color:var(--ink)}
-.fp-input:focus{outline:none;border-color:var(--teal-mid)}
-.boisjoly-compare{background:var(--navy);color:white;border-radius:.6rem;padding:1.1rem;margin-top:1rem}
-.boisjoly-compare h4{color:var(--teal-mid);margin-bottom:.6rem}
-.boisjoly-compare p{color:rgba(255,255,255,.8);font-size:.86rem;margin-bottom:.4rem}
-
-/* ── TRANSFER SECTION ── */
-.transfer-section{background:var(--paper);border:1px solid var(--border);border-radius:.6rem;padding:1.1rem;margin-bottom:1rem}
-.sage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin-top:.85rem}
-.sage-card{border-radius:.5rem;padding:.85rem;border:1px solid var(--border)}
-.sage-card h4{font-size:.88rem;margin-bottom:.35rem}
-.sage-card p{font-size:.79rem;color:var(--muted);margin-bottom:.3rem;line-height:1.5}
-.sage-tier{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.15rem .45rem;border-radius:.25rem;font-weight:700;text-transform:uppercase}
-.tier-strong{background:var(--green-light);color:var(--green)}
-.tier-developing{background:var(--teal-light);color:var(--teal-dark)}
-.tier-emerging{background:var(--amber-light);color:var(--amber-dark)}
-.tier-undertested{background:var(--paper);color:var(--muted);border:1px solid var(--border)}
-
-/* ── WATERSHED MINI VIZ ── */
-.watershed-wrap{background:var(--paper);border:1px solid var(--border);border-radius:.6rem;padding:1rem;margin:1rem 0}
-.watershed-label{font-family:'JetBrains Mono',monospace;font-size:.67rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal-dark);margin-bottom:.5rem}
+footer{max-width:72rem;margin:2rem auto 0;padding:1.25rem 1rem;text-align:center;color:rgba(255,255,255,.35);font-size:.78rem;font-style:italic}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:640px){
+  .header-titles h1{font-size:1.1rem}
+  .tab-btn{font-size:.77rem;padding:.4rem .6rem}
+  .copernicus-diagram{grid-template-columns:1fr;}.diagram-arrow{transform:rotate(90deg)}
+  .metric-entry{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="app-wrap">
 
-<div class="app-header">
-  <div class="ch-label">Ethics Beyond Boundaries · Chapter 2 · The Suppression Gap</div>
-  <h1>The Challenger Disaster</h1>
-  <div class="sub">Roger Boisjoly · Institutional Failure · The Ethics of Speaking Truth to Power</div>
-</div>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-<div class="tab-nav" role="tablist">
-  <button class="tab-btn active" id="tb-overview"       onclick="showTab('overview',this)"       role="tab">Overview</button>
-  <button class="tab-btn"        id="tb-discovery"      onclick="showTab('discovery',this)"      role="tab">Discovery</button>
-  <button class="tab-btn"        id="tb-memo"           onclick="showTab('memo',this)"           role="tab">The Memo</button>
-  <button class="tab-btn critical-tab" id="tb-teleconference" onclick="showTab('teleconference',this)" role="tab">Teleconference</button>
-  <button class="tab-btn critical-tab" id="tb-simulation"     onclick="showTab('simulation',this)"     role="tab">UCP Simulation</button>
-  <button class="tab-btn"        id="tb-aftermath"      onclick="showTab('aftermath',this)"      role="tab">Aftermath</button>
-  <button class="tab-btn"        id="tb-transfer"       onclick="showTab('transfer',this)"       role="tab">Synthesis &amp; Transfer</button>
-  <button class="tab-btn"        id="tb-journal"        onclick="showTab('journal',this)"        role="tab">Ethics Journal</button>
-</div>
-
-<!-- ══════════════ OVERVIEW ══════════════ -->
-<div class="tab-pane active" id="tab-overview">
-  <h2>Overview — The Suppression Gap Made Visible</h2>
-
-  <div class="pred-retrieval" id="orientPredPanel">
-    <div class="pred-retrieval-label">Your Prediction (from Orientation Journal)</div>
-    <div id="orientPredText" class="pred-retrieval-empty">Loading your prediction...</div>
-  </div>
-
-  <p><strong>On January 28, 1986, the Space Shuttle Challenger broke apart 73 seconds after launch, killing all seven crew members.</strong> This was not an accident. It was a predicted catastrophe. Roger Boisjoly, an engineer at Morton Thiokol, had warned for 18 months that the shuttle's O-ring joint design was unsafe at cold temperatures — and had explicitly predicted "loss of the shuttle and the crew" in a memo six months before the disaster.</p>
-
-  <p>The disaster is the most carefully documented case of institutional suppression in modern engineering history. Boisjoly's knowledge was accurate. His analysis was correct. His warnings were written, submitted through proper channels, and acknowledged. <strong>None of it reached the launch decision.</strong></p>
-
-  <div class="card card-red">
-    <h4>What This Case Teaches</h4>
-    <p>The Challenger disaster is not a story about bad people. Morton Thiokol management were not villains. They were people inside an institutional architecture that made suppressing inconvenient information the rational choice. Understanding why requires understanding the suppression gap — the structural distance between what agents actually know and what reaches decisions.</p>
-  </div>
-
-  <h3>The Watershed — January 27, 1986</h3>
-  <p>The night before the launch, Morton Thiokol engineers held a teleconference with NASA. Here is what the watershed looked like in that room:</p>
-
-  <div class="watershed-wrap">
-    <div class="watershed-label">λ Raw vs. OS2 Bridge — Thiokol Teleconference</div>
-    <canvas id="overviewWatershed" width="820" height="140" style="width:100%;display:block;border-radius:6px;background:rgba(26,39,68,.04)"></canvas>
-    <p style="font-size:.75rem;color:var(--muted);margin:.4rem 0 0;text-align:center">Seven engineers (peaks) — all above the deliberative threshold — and what reached the launch decision (reservoir). Run the simulation in the UCP Simulation tab to populate this with real results.</p>
-  </div>
-
-  <h3>Course Connection</h3>
-  <p>This is the second chapter in a sequence that begins with the PRF. In Chapter 1 you mapped your own interpretive lens. In Chapter 2, you encounter what happens when an institutional architecture makes certain PRFs invisible to decision-makers. The suppression gap is not an abstract concept — it is the structural mechanism by which what Boisjoly knew failed to reach the people who needed it.</p>
-
-  <div class="card card-teal">
-    <h4>How to Use This App</h4>
-    <p>Work through the tabs in order: <strong>Discovery</strong> → <strong>The Memo</strong> → <strong>Teleconference</strong> → <strong>UCP Simulation</strong> → <strong>Aftermath</strong> → <strong>Synthesis &amp; Transfer</strong> → <strong>Ethics Journal</strong>. The simulation tab connects your reading directly to the computational model. Your journal entry in the last tab stores a prediction for Chapter 3.</p>
-  </div>
-</div>
-
-<!-- ══════════════ DISCOVERY ══════════════ -->
-<div class="tab-pane" id="tab-discovery">
-  <h2>Discovery — The Fatal Flaw</h2>
-
-  <div class="event-date">January 24, 1985</div>
-  <h3>The Cold Launch That Changed Everything</h3>
-  <p>Space Shuttle mission STS-51-C launched on January 24, 1985, in 53°F weather — the coldest launch to date. Roger Boisjoly was part of the team that inspected the recovered solid rocket boosters.</p>
-
-  <div class="card card-red">
-    <h4>What Boisjoly Found</h4>
-    <p>Severe primary O-ring erosion and evidence of hot gas blow-by in the field joints. This was not a minor anomaly — it was direct evidence that the joint design was failing under the thermal stress of launch. Critically: the colder the temperature at launch, the more the O-rings failed to seal. Below approximately 53°F, the rubber hardened enough to lose its ability to compress into the joint gap before hot combustion gases forced through.</p>
-  </div>
-
-  <p><strong>Critical Realization:</strong> The design was unsafe at ANY temperature. Cold weather made it worse, but the fundamental problem was the joint design itself. Every launch was, as Boisjoly later testified, a form of Russian roulette.</p>
-
-  <h3>Boisjoly's PRF in Action</h3>
-  <p>Understanding what Boisjoly saw — and why he saw it when others did not — requires understanding his interpretive framework. His PRF was calibrated to <strong>physical reality</strong> as the fundamental datum. While managers saw "launch schedules" and "contractual obligations" as the pressing reality, Boisjoly saw "material properties at temperature" as more fundamentally true. His framework made the danger immediately legible. Management's framework made the schedule pressure immediately legible.</p>
-
-  <p>This is not a story of villains and heroes. It is a story of how different PRFs produce different perceptions of the same situation — and how institutional architecture determines which perceptions reach decisions.</p>
-
-  <div class="card card-amber">
-    <h4>The PRF Collision</h4>
-    <p><strong>Boisjoly's lens:</strong> "The physical evidence shows catastrophic risk. This is not debatable — it is material science." <strong>Management's lens:</strong> "Engineering anomalies are normal. We have launch commitments. NASA is pushing hard. What is the risk threshold that lets us proceed?" Both lenses were internally consistent. The institutional architecture let only one of them reach the launch decision.</p>
-  </div>
-
-  <h3>Reflection</h3>
-  <div class="journal-q">
-    <div class="q-label">Discovery Reflection</div>
-    <p>Think about a time when you noticed something that others in your institution did not see, or did not treat as significant. What did your PRF make visible? What did the institutional response tell you about which perceptions the architecture could receive?</p>
-    <textarea class="jta" id="ta-discovery" placeholder="Write your reflection here..." oninput="jSave('discovery',this.value)"></textarea>
-    <div class="save-note" id="sn-discovery">✓ Saved</div>
-  </div>
-</div>
-
-<!-- ══════════════ THE MEMO ══════════════ -->
-<div class="tab-pane" id="tab-memo">
-  <h2>The Memo — Doing Everything Right</h2>
-
-  <div class="event-date">July 31, 1985</div>
-  <h3>Six Months Before Challenger</h3>
-  <p>After months of further analysis, Boisjoly wrote a memo to the Vice President of Engineering at Morton Thiokol. It is one of the most important documents in the history of engineering ethics — not because of its rhetorical sophistication, but because of what happened after it was received.</p>
-
-  <div class="memo-box">
-    <div class="memo-header">MEMORANDUM — July 31, 1985 — R. M. Boisjoly to R. K. Lund, V.P. Engineering</div>
-    <p>This letter is written to insure that management is fully aware of the seriousness of the current O-ring erosion problem in the SRM joints from an engineering standpoint. The mistakenly accepted position on the joint problem was to fly without fear of failure and to run a series of design evaluations which would ultimately lead to a solution or at least a significant reduction of the erosion problem. This is no longer acceptable to me. It is my honest and real fear that if we do not take immediate action to dedicate a team to solve the problem, with the field joint having the number one priority, then we stand in jeopardy of losing a flight along with all the launch pad facilities.</p>
-    <p><strong>— R. M. Boisjoly, Applied Mechanics Section, SRM Engineering, 31 July 1985</strong></p>
-  </div>
-
-  <div class="stat-grid">
-    <div class="stat-box">
-      <div class="stat-val">15%</div>
-      <div class="stat-label">Boisjoly's estimated failure probability per flight</div>
+<header class="glass-dark" role="banner">
+  <div class="header-inner">
+    <div class="header-titles">
+      <h1>Chapter 2: The Telescope</h1>
+      <p>Seeing the Structure · Roger Boisjoly · The Suppression Gap · Simulation as Instrument</p>
     </div>
-    <div class="stat-box">
-      <div class="stat-val">8</div>
-      <div class="stat-label">Flights after memo before Challenger</div>
-    </div>
-    <div class="stat-box" style="--red:#dc2626">
-      <div class="stat-val" style="color:var(--red)">7</div>
-      <div class="stat-label">Crew members killed on Challenger</div>
+    <div class="header-right">
+      <span class="prf-badge" id="prfBadge" aria-live="polite">No PRF loaded</span>
+      <label class="prf-file-label" for="prfInput">📂 Load My PRF</label>
+      <input type="file" id="prfInput" accept=".json" style="display:none" aria-label="Load PRF-22 file">
+      <div class="prog-wrap" aria-label="Chapter progress">
+        <span class="prog-label" id="progLabel">0/6</span>
+        <div class="prog-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="6">
+          <div class="prog-fill" id="progFill" style="width:0%"></div>
+        </div>
+      </div>
     </div>
   </div>
+</header>
 
-  <h3>The Russian Roulette Calculation</h3>
-  <p>A 15% failure probability per flight means a 15% chance of catastrophic failure on every single launch. With 8 missions after the memo, the cumulative probability of at least one disaster was <strong>approximately 73%</strong>. As Boisjoly later testified: this wasn't bad luck. This was the predictable outcome of ignoring quantified risk. The disaster was a matter of "when," not "if."</p>
+<div class="page" id="main-content">
+  <nav class="tab-nav" aria-label="Chapter sections" role="tablist">
+    <button class="tab-btn active" id="btn-copernicus" onclick="showTab('copernicus',this)" aria-selected="true" role="tab">§1 The Copernican Shift</button>
+    <button class="tab-btn" id="btn-boisjoly" onclick="showTab('boisjoly',this)" aria-selected="false" role="tab">§2 Boisjoly's PRF</button>
+    <button class="tab-btn" id="btn-institution" onclick="showTab('institution',this)" aria-selected="false" role="tab">§3 The Institution</button>
+    <button class="tab-btn" id="btn-simulation" onclick="showTab('simulation',this)" aria-selected="false" role="tab">§4 The Simulation</button>
+    <button class="tab-btn" id="btn-what" onclick="showTab('what',this)" aria-selected="false" role="tab">§5 What Simulation Is</button>
+    <button class="tab-btn" id="btn-gap" onclick="showTab('gap',this)" aria-selected="false" role="tab">§6 Your Gap Analysis</button>
+    <button class="tab-btn" id="btn-journal" onclick="showTab('journal',this)" aria-selected="false" role="tab">§7 Journal</button>
+  </nav>
 
-  <h3>What Happened to the Memo</h3>
-  <p>The memo was received, acknowledged, and filed. A task force was formed. Its progress was slow. The institutional response to a clear, documented, quantified warning of catastrophic risk was: normal process. This is the suppression gap in its most legible form — not a decision to ignore the warning, but an architecture that routes warnings through channels that convert urgency into process.</p>
+  <!-- ═══ §1 THE COPERNICAN SHIFT ═══ -->
+  <div id="pane-copernicus" class="tab-pane active glass fade-in" style="border-radius:.875rem;padding:2rem" role="tabpanel">
+    <h2>§1 — The Copernican Shift</h2>
 
-  <h3>What Would You Do?</h3>
-  <p>It is now January 1986. You are Boisjoly. Your July memo was acknowledged but the underlying problem has not been fixed. Challenger is scheduled to launch in cold weather. What do you do?</p>
+    <p>On the night of January 27, 1986, Roger Boisjoly sat in a teleconference room at Morton Thiokol and watched his knowledge fail to reach a decision. He had the data, the analysis, and a memo written six months earlier warning that the O-ring design was dangerous below 53°F. The forecast for launch morning was 29°F. He presented everything he had. He was overruled. At 11:38 AM the next day, Challenger broke apart. All seven crew members were killed.</p>
 
-  <div class="choice-grid" id="memoChoiceGrid">
-    <button class="scenario-choice" onclick="selectChoice(this,'memo',1)">
-      <div class="choice-title">1. Continue using internal channels</div>
-      <div class="choice-desc">Keep attending meetings, presenting data, filing reports. Stay within the system.</div>
-    </button>
-    <button class="scenario-choice" onclick="selectChoice(this,'memo',2)">
-      <div class="choice-title">2. Contact journalists or the public</div>
-      <div class="choice-desc">Go outside the organization. Public pressure might force action — but you'll likely be fired.</div>
-    </button>
-    <button class="scenario-choice" onclick="selectChoice(this,'memo',3)">
-      <div class="choice-title">3. Resign publicly</div>
-      <div class="choice-desc">Make your resignation a statement. Protect your integrity but abandon your post.</div>
-    </button>
-    <button class="scenario-choice" onclick="selectChoice(this,'memo',4)">
-      <div class="choice-title">4. Document everything meticulously</div>
-      <div class="choice-desc">Create an unassailable record. If disaster strikes, the truth will be preserved.</div>
-    </button>
-  </div>
-  <div class="choice-feedback" id="memo-feedback"></div>
+    <p>This chapter does not use that case to teach you about moral courage or institutional cowardice. Those lessons are available from the individual-centered ethical reference frame — and you already know them. This chapter uses Challenger to demonstrate something the individual-centered frame cannot show: <strong>that the outcome was structurally predictable from the configuration of the institution</strong>, regardless of which individuals occupied its roles, and that the simulation measures that configuration precisely enough to explain why.</p>
 
-  <div class="journal-q" style="margin-top:1rem">
-    <div class="q-label">Memo Reflection</div>
-    <p>What would you actually do? What factors would influence your decision — financial obligations, family, career, your sense of professional responsibility?</p>
-    <textarea class="jta" id="ta-memo" placeholder="Be honest with yourself about what you would actually do..." oninput="jSave('memo',this.value)"></textarea>
-    <div class="save-note" id="sn-memo">✓ Saved</div>
-  </div>
-</div>
+    <h3>The Anomalies Every Theory Generates</h3>
+    <p>Each canonical ethical tradition generates characteristic anomalies — observations it can accommodate only through increasingly complex modifications. They all appear at the same location:</p>
 
-<!-- ══════════════ TELECONFERENCE ══════════════ -->
-<div class="tab-pane" id="tab-teleconference">
-  <h2>The Teleconference — The Night Before</h2>
+    <div role="list">
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-v">Virtue Ethics</span> Why do good people produce harmful institutions?</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p>Virtue ethics correctly identifies that character matters. Thiokol's managers may genuinely have lacked courage in that room. But virtue ethics cannot explain why the outcome was predictable from the structural configuration regardless of who occupied the roles. Even managers of excellent character, operating inside the same institutional architecture, would have faced the same structural pressure to attenuate Boisjoly's signal. The anomaly appears at the boundary between individual character and institutional structure.</p>
+        </div>
+      </div>
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-d">Deontology</span> Why do individual duties fulfilled still produce structural violations?</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p>Deontology correctly identifies that Boisjoly's rational agency was prevented from reaching the decision — a Kantian violation. But no individual chose to create the suppression gap. The gap was produced by the communication architecture of the institution. Deontology at the individual level cannot identify the structural mechanism or prescribe the structural remedy. The anomaly appears exactly where individual duty analysis runs out.</p>
+        </div>
+      </div>
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-c">Consequentialism</span> Why did individually rational calculations produce catastrophic aggregate outcomes?</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p>Consequentialism correctly identifies that the managers miscalculated. But the calculation was distorted by the institutional architecture before any individual did the math. The authority-weighted evidence distribution meant the institutional calculus systematically underweighted empirical data relative to authority-endorsed conclusions — not through individual bias but through the decision architecture's evidence policy.</p>
+        </div>
+      </div>
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-ca">Care Ethics</span> Why does individual caring consistently fail inside structurally hostile institutions?</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p>Care ethics correctly identifies that the managers failed to attend to the seven specific lives at stake. But the institutional architecture specifically severed the relational connection between the people who most deeply cared about those lives (the engineers who had built the joint and analyzed its failure modes) and the decision that would determine those lives. Individual caring was present. The structure prevented it from reaching the decision.</p>
+        </div>
+      </div>
+    </div>
 
-  <div class="event-date">January 27, 1986 — The Night Before the Launch</div>
-  <p>With temperatures predicted to drop to the low 20s°F overnight, Morton Thiokol engineers held a teleconference with NASA to discuss the launch decision. This is the most thoroughly documented moment of institutional suppression in modern engineering history.</p>
+    <h3>The Copernican Move</h3>
+    <div class="copernicus-diagram" role="img" aria-label="Comparison of OS1 and OS2 reference frames">
+      <div class="diagram-box diagram-os1">
+        <div class="diagram-label">OS1 Reference Frame</div>
+        <div class="diagram-title">Individual-Agent View</div>
+        <div class="diagram-desc">What should individuals do? Who is responsible? What duties apply? Who failed? Generates epicycles at the institutional boundary.</div>
+      </div>
+      <div class="diagram-arrow" aria-hidden="true">→</div>
+      <div class="diagram-box diagram-os2">
+        <div class="diagram-label">OS2 Reference Frame</div>
+        <div class="diagram-title">System-of-Individuals View</div>
+        <div class="diagram-desc">What does this structural configuration produce? What architecture generates this gap? Which parameters produce which outputs? Dissolves the anomalies.</div>
+      </div>
+    </div>
 
-  <h3>The Positions in the Room</h3>
+    <p>Copernicus did not discover new celestial objects. He found the reference frame from which existing observations organized themselves coherently without epicycles. The OS2 shift does the same in ethics. The four theories are not wrong — they are seeing from one vantage point. When the reference frame shifts to the system of agents, the anomalies dissolve. The individual-level claims remain valid; they are now understood at the scale where they become fully coherent.</p>
 
-  <div class="card card-teal">
-    <h4>Boisjoly's Recommendation</h4>
-    <p><strong>Do not launch.</strong> The cold temperature would make an already-unsafe joint design even more dangerous. But his real position — consistent since the July memo — was that they shouldn't be flying at all until the joint was redesigned.</p>
-  </div>
+    <div class="card card-red">
+      <h4>What the OS2 Reference Frame Is Not</h4>
+      <p>The OS2 reference frame does not remove individual moral responsibility. Thiokol's managers made choices. Those choices were wrong. They bear responsibility for them. What the OS2 view adds is an account of why the outcome was structurally predictable — and therefore why changing the individuals without changing the architecture would not have changed the outcome. Understanding structural causation is not the same as excusing individual agents. It is the precondition for addressing the problem.</p>
+    </div>
 
-  <div class="card card-red">
-    <h4>NASA's Response</h4>
-    <p>"When do you want to launch, next April?" The institutional pressure was explicit, direct, and from a customer who held Morton Thiokol's contract. The message was clear: find a way to say yes.</p>
-  </div>
+    <div class="journal-box">
+      <h4>📝 The Anomaly in Your Own Institutional Life</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Identify one situation from your own experience — workplace, school, family, community — where good people with good intentions produced a harmful collective outcome that no individual would have chosen. Which of the four theories' anomalies does it most resemble? What structural feature produced the outcome?</p>
+      <textarea class="journal-ta" id="jt-anomaly" aria-label="Anomaly reflection journal" placeholder="Situation: ...&#10;The anomaly it most resembles (virtue/deont/conseq/care): ...&#10;The structural feature responsible: ..." oninput="jSave('anomaly',this.value)"></textarea>
+      <div class="save-note" id="sn-anomaly" aria-live="polite">✓ Saved</div>
+    </div>
 
-  <div class="card card-amber">
-    <h4>The Management Decision</h4>
-    <p>Morton Thiokol management asked for a break in the teleconference. During that break, Thiokol's VP of Engineering told the engineers: "Take off your engineering hat and put on your management hat." When the teleconference resumed, management overruled their own engineers and recommended launch.</p>
-  </div>
-
-  <blockquote>
-    "I felt personally that management was under a lot of pressure to launch and that they made a very tough decision, but I didn't agree with it."
-    <cite>— Roger Boisjoly, testimony to the Rogers Commission</cite>
-  </blockquote>
-
-  <h3>How Systems Destroy Agency</h3>
-  <p>"Take off your engineering hat" is the most explicit articulation of institutional suppression in any documented case. It is a direct instruction to change PRF — to stop perceiving physical reality as the fundamental datum and start perceiving organizational reality as more fundamentally true. The suppression gap was not accidental. It was imposed by a direct instruction to the people generating accurate information.</p>
-
-  <p>Boisjoly was asked to prove something would <em>definitely</em> fail. Engineering is about probabilities. You cannot prove a probabilistic event will occur on a specific flight — you can only show the risk is unacceptable. The epistemic standard was changed in the teleconference from "show the risk is unacceptable" to "prove it will definitely fail" — a standard that is structurally impossible to meet and therefore structurally silences the engineers.</p>
-
-  <div class="journal-q">
-    <div class="q-label">Teleconference Reflection</div>
-    <p>At what point does "following proper channels" become complicity when you know people will die? Where is your line?</p>
-    <textarea class="jta" id="ta-teleconference" placeholder="Describe a situation where you would break the rules, risk your career, or go public to prevent harm..." oninput="jSave('teleconference',this.value)"></textarea>
-    <div class="save-note" id="sn-teleconference">✓ Saved</div>
-  </div>
-</div>
-
-<!-- ══════════════ UCP SIMULATION ══════════════ -->
-<div class="tab-pane" id="tab-simulation">
-  <h2>UCP Simulation — The Teleconference Modeled</h2>
-
-  <div class="pred-retrieval" id="simPredPanel">
-    <div class="pred-retrieval-label">Your Prediction (from Orientation Journal)</div>
-    <div id="simPredText" class="pred-retrieval-empty">Loading...</div>
-  </div>
-
-  <p>The suppression gap Boisjoly experienced — high coordination capacity he could not surface to decision-makers — is exactly what the UCP simulation models. <strong>Configuration A</strong> approximates the Thiokol structure on January 27: authority-weighted evidence distribution, role-order worldview dominance, negative community and fairness blocks. <strong>Configuration B</strong> simulates the same scenario with a protected independent review channel — the structural change that could have saved seven lives.</p>
-
-  <div class="ucp-config" id="configA-display">
-    <div class="ucp-config-label">Configuration A — Thiokol Structure (No Protection)</div>
-    <div class="ucp-config-title">Authority-weighted evidence · Role-order dominant · Negative block fields</div>
-    <table class="ucp-config-table">
-      <tr><td class="cfg-key">Entropy</td><td class="cfg-val">0.52 — moderate institutional unpredictability</td></tr>
-      <tr><td class="cfg-key">Stress</td><td class="cfg-val">0.58 — elevated; approaching Sapolsky threshold</td></tr>
-      <tr><td class="cfg-key">Authority-weighted evidence</td><td class="cfg-val">0.45 — information filtered through hierarchy before decisions</td></tr>
-      <tr><td class="cfg-key">Community block</td><td class="cfg-val">−0.45 — relational isolation; engineers vs. management</td></tr>
-      <tr><td class="cfg-key">Fairness block</td><td class="cfg-val">−0.55 — epistemic injustice; engineering data discounted</td></tr>
-    </table>
-    <div class="scaffold">
-      <div class="scaffold-label">Before you run — predict the outcome</div>
-      <div class="scaffold-item"><strong>λ Raw:</strong> Engineers have accurate knowledge. Where will the capability water table sit?</div>
-      <div class="scaffold-item"><strong>Suppression Gap:</strong> How wide is the gap between what engineers know and what reaches the launch decision?</div>
-      <div class="scaffold-item"><strong>OS2 Bridge:</strong> Given the authority-weighted evidence architecture, how much of engineer knowledge actually coordinates the launch decision?</div>
+    <div class="section-nav">
+      <span></span>
+      <button class="section-nav-btn primary" onclick="goNext('copernicus','boisjoly')">Next: Boisjoly's PRF →</button>
     </div>
   </div>
 
-  <div class="ucp-config" id="configB-display" style="display:none">
-    <div class="ucp-config-label">Configuration B — Protected Review Channel</div>
-    <div class="ucp-config-title">Empirical-calibrated evidence · Diverse worldviews · Positive block fields</div>
-    <table class="ucp-config-table">
-      <tr><td class="cfg-key">Entropy</td><td class="cfg-val">0.52 — identical to Configuration A</td></tr>
-      <tr><td class="cfg-key">Stress</td><td class="cfg-val">0.58 — identical to Configuration A</td></tr>
-      <tr><td class="cfg-key">Empirical-calibrated evidence</td><td class="cfg-val">0.55 — technical findings routed directly to decision</td></tr>
-      <tr><td class="cfg-key">Community block</td><td class="cfg-val">+0.30 — protected channel maintains relational trust</td></tr>
-      <tr><td class="cfg-key">Fairness block</td><td class="cfg-val">+0.25 — engineering evidence treated as equal input</td></tr>
-    </table>
-    <div class="scaffold">
-      <div class="scaffold-label">The structural question</div>
-      <div class="scaffold-item"><strong>Architecture change:</strong> Same people. Same stress. Same entropy. Only the evidence routing and block fields changed. What does this tell you about where the moral failure actually lived?</div>
-      <div class="scaffold-item"><strong>Boisjoly's agency:</strong> The simulation shows structural features. What it cannot show is whether Boisjoly would have spoken differently if the structure had been different. What do you think?</div>
+  <!-- ═══ §2 BOISJOLY'S PRF ═══ -->
+  <div id="pane-boisjoly" class="tab-pane glass fade-in" style="border-radius:.875rem;padding:2rem;display:none" role="tabpanel">
+    <h2>§2 — Roger Boisjoly and the Night Before</h2>
+
+    <p>Chapter 1 established that your PRF is the generative model your brain uses for moral situations — it determines what you notice first, what you weight as urgent, and what requires active inference to see. The Challenger case provides something rare: historical precision about one person's PRF configuration and the institutional architecture that surrounded it.</p>
+
+    <div class="card card-red" style="margin-bottom:1.25rem">
+      <h4>The July 31, 1985 Memo</h4>
+      <p>Six months before the launch, Boisjoly wrote this to Thiokol's VP of Engineering:</p>
+      <div class="card-quote" role="blockquote">It is my honest and very real fear that if we do not take immediate action to dedicate a team to solve the problem, with the field joint having the number one priority, then we stand in jeopardy of losing a flight along with all the lives of the people on it. The result would be a catastrophe of the highest order — loss of human life.
+        <div style="text-align:right;margin-top:.6rem;font-style:normal;font-weight:700;font-size:.85rem">— Roger Boisjoly, July 31, 1985</div>
+      </div>
+      <p style="margin-bottom:0;font-size:.9rem">The memo was received. It was filed. It did not change the decision calculus. This is not because anyone decided it was wrong. It is because the institutional architecture was calibrated to attenuate exactly the kind of signal it contained.</p>
+    </div>
+
+    <h3>Boisjoly's Six PRF Dimensions</h3>
+    <div class="prf-grid" role="list">
+      <div class="prf-dim" role="listitem">
+        <div class="prf-dim-label">Beliefs</div>
+        <div class="prf-dim-title">Physical reality is measurable. Unknowns are dangerous.</div>
+        <div class="prf-dim-text">Engineering data does not lie. A joint that has never been tested at 29°F is a joint whose performance at 29°F is unknown — which means it must be treated as dangerous. Schedule pressure is real but irrelevant to the physics of rubber in cold metal.</div>
+      </div>
+      <div class="prf-dim" role="listitem">
+        <div class="prf-dim-label">Rules</div>
+        <div class="prf-dim-title">Burden of proof runs one direction only.</div>
+        <div class="prf-dim-text">If you cannot prove it is safe, you do not fly. Not: if you cannot prove it is unsafe, you fly. This rule was not written — it was the implicit professional standard of everyone in the room. It was violated by the management decision that inverted the burden.</div>
+      </div>
+      <div class="prf-dim" role="listitem">
+        <div class="prf-dim-label">Ontology</div>
+        <div class="prf-dim-title">What is most real is the physical joint.</div>
+        <div class="prf-dim-text">Schedules, political pressures, contractor relationships, presidential speech timelines — these are real but not as real as the rubber that will fail at 29°F. The institutional hierarchy of reality was inverted relative to his.</div>
+      </div>
+      <div class="prf-dim" role="listitem">
+        <div class="prf-dim-label">Authenticity</div>
+        <div class="prf-dim-title">No gap between internal state and expression.</div>
+        <div class="prf-dim-text">He said exactly what he believed, with the evidence he had, as forcefully as the situation allowed. This is why the suppression gap is not attributable to any gap in his own expression — it was produced entirely by the institutional architecture.</div>
+      </div>
+      <div class="prf-dim" role="listitem">
+        <div class="prf-dim-label">Assembly History</div>
+        <div class="prf-dim-title">25 years of engineering discipline.</div>
+        <div class="prf-dim-text">The burden-of-proof rule had been practiced and internalized over a career. The O-ring erosion analysis he conducted himself. The memo he wrote six months earlier. The formation was precise and documented.</div>
+      </div>
+      <div class="prf-dim" role="listitem">
+        <div class="prf-dim-label">Forward Pull</div>
+        <div class="prf-dim-title">The seven people on that shuttle.</div>
+        <div class="prf-dim-text">Not abstract lives but specific faces — he knew this crew. The forward pull was immediate and personal: if this joint fails, these people die. Care/Harm precision-weighting at maximum activation. Everything else was noise against that signal.</div>
+      </div>
+    </div>
+
+    <div class="card card-gold" style="margin-top:1.25rem">
+      <h4>The Structural Argument the PRF Table Makes</h4>
+      <p>Boisjoly's PRF was not unusual or heroic. It was the standard configuration of competent engineering discipline: empirical-calibrated evidence weighting, high Care/Harm sensitivity, and a professional rule structure built on the principle that unknowns are dangerous.</p>
+      <p style="margin-bottom:0">The NASA/Thiokol decision architecture was precisely inverted. Authority-weighted evidence distribution (0.45), role_order worldview dominance (0.55), schedule pressure embedded as negative block fields on Care and Fairness. The suppression gap was the predictable output of that inversion — not an aberrant outcome of individual failure.</p>
+    </div>
+
+    <div class="card-quote" role="blockquote" style="margin-top:1.25rem">
+      I argued to no end. I was trying to listen to his data, and I can still hear the management team saying, in effect, 'OK Thiokol, go take off your engineering hat and put on your management hat.' And that is a scary thought. Because then they can go anywhere.
+      <div style="text-align:right;margin-top:.6rem;font-style:normal;font-weight:700;font-size:.85rem">— Roger Boisjoly, Rogers Commission testimony, 1986</div>
+    </div>
+
+    <div class="card card-sky" style="margin-top:1rem">
+      <h4>Read This Through Chapter 1's Vocabulary</h4>
+      <p style="margin-bottom:0">"Take off your engineering hat and put on your management hat" is a request to change the precision-weighting structure in real time — to attenuate the empirical-calibrated, high-Care-sensitivity signal and amplify the authority-weighted, schedule-priority signal. It is a request to change the generative model mid-decision. Boisjoly refused. The architecture had mechanisms to route around his refusal. Seven people died.</p>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 PRF Comparison</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Compare Boisjoly's PRF to your own. Which dimension of his PRF most closely matches your own framework's configuration? Which differs most significantly? What does that difference predict about which features of the Challenger case your framework makes automatically visible versus which require active inference?</p>
+      <textarea class="journal-ta" id="jt-prf-compare" aria-label="PRF comparison journal" placeholder="The dimension of Boisjoly's PRF most similar to mine: ...&#10;The dimension most different: ...&#10;What this predicts I would have seen first versus needed active inference to see: ..." oninput="jSave('prf_compare',this.value)"></textarea>
+      <div class="save-note" id="sn-prf-compare" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-nav-btn" onclick="goNext('boisjoly','copernicus')">← §1 The Copernican Shift</button>
+      <button class="section-nav-btn primary" onclick="goNext('boisjoly','institution')">Next: The Institution →</button>
     </div>
   </div>
 
-  <div class="ucp-btn-row">
-    <button class="ucp-run-btn" id="btnRunA" onclick="runSim(false)">
-      <span class="ucp-spinner" id="spinA"></span>
-      ▶ Run Configuration A — Thiokol Structure
-    </button>
-    <button class="ucp-run-btn biobond" id="btnRunB" onclick="runSim(true)" style="display:none">
-      <span class="ucp-spinner" id="spinB"></span>
-      🛡 Run Configuration B — Protected Channel
-    </button>
-  </div>
+  <!-- ═══ §3 THE INSTITUTION ═══ -->
+  <div id="pane-institution" class="tab-pane glass fade-in" style="border-radius:.875rem;padding:2rem;display:none" role="tabpanel">
+    <h2>§3 — The Institution as the Unit of Analysis</h2>
 
-  <div class="ucp-error" id="ucpError"></div>
-  <div class="ucp-results" id="ucpResults" style="display:none"></div>
+    <p>The simulation models the institutional architecture — not Boisjoly's individual decision. This section shows what each canonical theory adds when it is applied at the system level rather than the individual level.</p>
 
-  <div id="watershedUpdate" style="display:none">
-    <div class="watershed-wrap" style="margin-top:1rem">
-      <div class="watershed-label">Watershed — Updated with Simulation Results</div>
-      <canvas id="simWatershed" width="820" height="140" style="width:100%;display:block;border-radius:6px;background:rgba(26,39,68,.04)"></canvas>
+    <div role="list">
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-v">Virtue Ethics</span> OS1 → OS2</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p><strong>OS1 (individual level):</strong> Did Thiokol managers lack courage? Yes. Did NASA leadership fail to develop practical wisdom? Yes. These are correct.</p>
+          <p style="margin-bottom:0"><strong>OS2 extension:</strong> What institutional design produces or destroys the conditions for courage in the people who inhabit it? NASA's reward structure punished technical dissent and rewarded schedule compliance. This shaped the character of everyone in the system — over years, through the consistent signal that dissent created friction without changing outcomes. The individual virtue failure was structurally produced. The OS2 question is: what architectural change would make courage structurally sustainable rather than requiring heroic individual effort against institutional pressure?</p>
+        </div>
+      </div>
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-d">Deontology</span> OS1 → OS2</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p><strong>OS1 (individual level):</strong> Managers violated their duty to protect lives. Boisjoly fulfilled his duty to disclose risk. These are correct.</p>
+          <p style="margin-bottom:0"><strong>OS2 extension:</strong> The suppression gap (λ Raw − λ Perceived) is the Kantian violation made structurally precise. No individual chose to create this gap — the design produced it. At the system level, the deontological question becomes: what institutional design enables rational agency to contribute to decisions, rather than systematically preventing it? The answer is in the parameters: lower authority_weighted evidence weighting, higher empirical_calibrated weighting, block fields that reward rather than penalize dissent.</p>
+        </div>
+      </div>
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-c">Consequentialism</span> OS1 → OS2</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p><strong>OS1 (individual level):</strong> The managers miscalculated the probability of failure. They should have updated their expected value calculation when Boisjoly presented his data.</p>
+          <p style="margin-bottom:0"><strong>OS2 extension:</strong> Agent-based simulation is consequentialism at the correct scale. The simulation does not calculate one individual's expected value — it models what this institutional architecture produces as a population-level pattern across every decision it processes. The authority-weighted evidence distribution (0.45) systematically suppresses empirical-calibrated input across all decisions, not just this one. The simulation's output predicts not just the Challenger outcome but the class of outcomes this architecture generates.</p>
+        </div>
+      </div>
+      <div class="accord" role="listitem">
+        <button class="accord-btn" aria-expanded="false" onclick="toggleAccord(this)">
+          <span><span class="theory-chip tc-ca">Care Ethics</span> OS1 → OS2</span>
+          <span class="accord-icon" aria-hidden="true">›</span>
+        </button>
+        <div class="accord-body" role="region">
+          <p><strong>OS1 (individual level):</strong> The managers failed to attend to the specific lives at stake — treating the astronauts as abstract risk calculations rather than particular persons to whom they stood in a relationship of care.</p>
+          <p style="margin-bottom:0"><strong>OS2 extension:</strong> The institutional architecture specifically severed the relational network between the people with the strongest care connection to the risk (the engineers who had built the joint and knew what 29°F meant for it) and the decision that would determine those lives. The Care/Harm block field was negative — the institution structurally penalized the expression of exactly the relational concern that care ethics identifies as morally primary. The OS2 question: what institutional design sustains the relational network that makes care's contribution to decisions possible?</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-red" style="margin-top:1.25rem">
+      <h4>The Central OS2 Claim — In Plain Language</h4>
+      <p>The suppression gap in the Challenger disaster was not primarily produced by individual moral failures. It was produced by an institutional architecture that systematically attenuated empirical-calibrated, high-Care-sensitivity input and amplified authority-weighted, schedule-priority input.</p>
+      <p style="margin-bottom:0">This claim is not philosophical. It is structural. The simulation measures it. The parameters that produce it are specified. The output it generates is predictable. Changing the individuals inside this architecture without changing the architecture would have produced the same gap.</p>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 Apply One OS2 Extension</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Choose the ethical theory whose OS2 extension surprised you most — the one that revealed something you had not seen from the OS1 reading. Describe what it added: what structural mechanism it named, what simulation metric measures it, and what architectural change would address it.</p>
+      <textarea class="journal-ta" id="jt-os2" aria-label="OS2 extension journal" placeholder="The theory whose OS2 extension surprised me most: ...&#10;What it revealed that the OS1 reading missed: ...&#10;The structural mechanism: ...&#10;The simulation metric that measures it: ...&#10;The architectural change that would address it: ..." oninput="jSave('os2',this.value)"></textarea>
+      <div class="save-note" id="sn-os2" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-nav-btn" onclick="goNext('institution','boisjoly')">← §2 Boisjoly's PRF</button>
+      <button class="section-nav-btn primary" onclick="goNext('institution','simulation')">Next: The Simulation →</button>
     </div>
   </div>
 
-  <div class="journal-q" style="margin-top:1.25rem">
-    <div class="q-label">Simulation Reflection</div>
-    <p>Compare the suppression gap in the two configurations. What does the gap number represent in Boisjoly's actual situation? What would a 20% reduction in suppression gap have meant in the teleconference room that night?</p>
-    <textarea class="jta" id="ta-simulation" placeholder="Compare the two runs. What changed? What stayed the same? What does that tell you about where the moral failure actually lived?" oninput="jSave('simulation',this.value)"></textarea>
-    <div class="save-note" id="sn-simulation">✓ Saved</div>
+  <!-- ═══ §4 THE SIMULATION ═══ -->
+  <div id="pane-simulation" class="tab-pane glass fade-in" style="border-radius:.875rem;padding:2rem;display:none" role="tabpanel">
+    <h2>§4 — Walking Through the Simulation</h2>
+
+    <h3>First: Your Prediction from Chapter 1</h3>
+    <p>You wrote a Challenger simulation prediction at the end of Chapter 1 (Q5). It is displayed below. Read it carefully — you are about to test it.</p>
+
+    <div class="prediction-display" role="region" aria-label="Your Chapter 1 prediction">
+      <div class="pred-eyebrow">Your Prediction (Orientation Journal or Chapter 1 Q5)</div>
+      <div id="predDisplay">
+        <p class="pred-empty">No prediction found. If you completed Chapter 1's Q5 journal entry, it should appear here. Make sure you are using the same browser where you completed Chapter 1.</p>
+      </div>
+    </div>
+
+    <h3>What the Simulation Models</h3>
+    <div class="card card-sky">
+      <h4>The Thiokol Management Configuration</h4>
+      <p>The simulation runs with these parameters — designed to represent the institutional architecture of the NASA/Thiokol decision process on January 27, 1986:</p>
+      <ul style="font-size:.88rem;line-height:1.8">
+        <li><strong>Worldview distribution:</strong> role_order 0.55 (hierarchical deference dominant), sacred_boundary 0.20, liberal_individualist 0.12, ubuntu_relational 0.08, indigenous_custodial 0.05</li>
+        <li><strong>Evidence distribution:</strong> authority_weighted 0.45, alternative_facts 0.25, tradition_weighted 0.20, empirical_calibrated 0.10</li>
+        <li><strong>Block fields:</strong> Schedule pressure embedded as negative Care and Fairness fields — raising safety concerns creates friction with the institutional goal</li>
+        <li><strong>Second run:</strong> With Whistleblower Protection — shows what structural support for dissent would have changed</li>
+      </ul>
+      <p style="margin-bottom:0;font-size:.88rem;font-style:italic">Notice: empirical_calibrated is at 0.10 — the lowest weighting. Boisjoly's entire argument was empirical. The architecture was designed, not through malice but through institutional culture, to weight exactly his kind of evidence least.</p>
+    </div>
+
+    <div class="sim-bridge" role="region" aria-label="Link to Challenger Case Explorer simulation">
+      <h3>Run the Simulation Now</h3>
+      <p>Open the Challenger Case Explorer in a new tab. Run both simulations — "Run Thiokol Structure" and "Run With Whistleblower Protection." Record the key metric values from both runs, then return here for your gap analysis.</p>
+      <a href="./challenger-case-explorer.html" target="_blank" rel="noopener" class="sim-link-btn" aria-label="Open Challenger Case Explorer in new tab">
+        Open Challenger Case Explorer →
+      </a>
+      <div class="sim-params">
+        <div class="sim-param-label">Key metrics to record:</div>
+        λ Raw · λ Perceived · Suppression Gap (λ Raw − λ Perceived) · Morphic Suppression · OS2 Bridge · Friction
+      </div>
+    </div>
+
+    <h3>Record Your Results</h3>
+    <p style="font-size:.88rem;color:var(--muted);margin-bottom:.875rem">Enter the values from both simulation runs. Your gap analysis in §6 will use these numbers.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem" role="group" aria-label="Simulation result entry">
+      <div style="background:var(--red-light);border-radius:.5rem;padding:1.1rem;border:2px solid var(--red-mid)">
+        <div style="font-size:.75rem;font-family:'Courier New',monospace;text-transform:uppercase;font-weight:700;color:var(--red);margin-bottom:.75rem">Run 1 — No Protection</div>
+        <div class="metric-entry" style="grid-template-columns:1fr;gap:.5rem">
+          <div class="metric-input-box" style="padding:.6rem">
+            <label class="metric-input-label" for="r1-raw" style="color:var(--red)">λ Raw</label>
+            <input type="number" id="r1-raw" class="metric-input" min="0" max="1" step="0.001" placeholder="0.000" aria-label="Run 1 lambda raw" oninput="saveResult('r1_raw',this.value)">
+          </div>
+          <div class="metric-input-box" style="padding:.6rem">
+            <label class="metric-input-label" for="r1-perc" style="color:var(--red)">λ Perceived</label>
+            <input type="number" id="r1-perc" class="metric-input" min="0" max="1" step="0.001" placeholder="0.000" aria-label="Run 1 lambda perceived" oninput="saveResult('r1_perc',this.value)">
+          </div>
+          <div class="metric-input-box" style="padding:.6rem">
+            <label class="metric-input-label" for="r1-morph" style="color:var(--red)">Morphic Suppression</label>
+            <input type="number" id="r1-morph" class="metric-input" min="0" max="1" step="0.001" placeholder="0.000" aria-label="Run 1 morphic suppression" oninput="saveResult('r1_morph',this.value)">
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--success-light);border-radius:.5rem;padding:1.1rem;border:2px solid #86efac">
+        <div style="font-size:.75rem;font-family:'Courier New',monospace;text-transform:uppercase;font-weight:700;color:var(--success);margin-bottom:.75rem">Run 2 — With Protection</div>
+        <div class="metric-entry" style="grid-template-columns:1fr;gap:.5rem">
+          <div class="metric-input-box" style="padding:.6rem">
+            <label class="metric-input-label" for="r2-raw" style="color:var(--success)">λ Raw</label>
+            <input type="number" id="r2-raw" class="metric-input" min="0" max="1" step="0.001" placeholder="0.000" aria-label="Run 2 lambda raw" oninput="saveResult('r2_raw',this.value)">
+          </div>
+          <div class="metric-input-box" style="padding:.6rem">
+            <label class="metric-input-label" for="r2-perc" style="color:var(--success)">λ Perceived</label>
+            <input type="number" id="r2-perc" class="metric-input" min="0" max="1" step="0.001" placeholder="0.000" aria-label="Run 2 lambda perceived" oninput="saveResult('r2_perc',this.value)">
+          </div>
+          <div class="metric-input-box" style="padding:.6rem">
+            <label class="metric-input-label" for="r2-morph" style="color:var(--success)">Morphic Suppression</label>
+            <input type="number" id="r2-morph" class="metric-input" min="0" max="1" step="0.001" placeholder="0.000" aria-label="Run 2 morphic suppression" oninput="saveResult('r2_morph',this.value)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 First Impressions — Before Gap Analysis</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Before working through the formal gap analysis in §6: what is your immediate reaction to the simulation results? Which number surprised you most? Which confirmed what you expected? What did the Whistleblower Protection run change — and what did it not change?</p>
+      <textarea class="journal-ta" id="jt-first-imp" aria-label="First impressions journal" placeholder="The number that surprised me most: ...&#10;What it confirmed: ...&#10;What the Protection run changed: ...&#10;What it did not change, and what that means: ..." oninput="jSave('first_imp',this.value)"></textarea>
+      <div class="save-note" id="sn-first-imp" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-nav-btn" onclick="goNext('simulation','institution')">← §3 The Institution</button>
+      <button class="section-nav-btn primary" onclick="goNext('simulation','what')">Next: What Simulation Is →</button>
+    </div>
+  </div>
+
+  <!-- ═══ §5 WHAT SIMULATION IS ═══ -->
+  <div id="pane-what" class="tab-pane glass fade-in" style="border-radius:.875rem;padding:2rem;display:none" role="tabpanel">
+    <h2>§5 — What Simulation Actually Is</h2>
+
+    <p>You have run a simulation and observed its output. Before we close the prediction-gap loop, we need to address a question this course has left implicit: what kind of claim does the suppression gap make when it is computationally measured rather than rhetorically asserted?</p>
+
+    <h3>The Philosophical Continuity</h3>
+    <p>Philosophy has always used thought experiments. Rawls asked you to reason behind a veil of ignorance. Kant asked you to universalize your maxim across all rational beings. Mill asked you to calculate aggregate welfare impartially. Trolley problems, experience machines, utility monsters — the apparatus of analytical ethics is built on structured imaginative exercises designed to isolate specific variables and observe what intuitions and principles reveal when tested.</p>
+
+    <div class="card card-violet">
+      <h4>Agent-Based Simulation Is This Method Made Computationally Rigorous</h4>
+      <p>The simulation is a formally specified thought experiment: a population of agents with defined PRFs, a structural configuration of block fields and evidence policies, a specific number of steps. The output is not a rhetorical claim about what would happen — it is the mathematically derived consequence of the specified starting conditions.</p>
+      <p style="margin-bottom:0">The suppression gap of 0.35 is not an assertion that things would have been bad. It is the formal output of a model with those parameters — comparable across runs, reproducible with the same seed, and variable when parameters change. This is what makes the claim structural rather than rhetorical: you can change the parameters and observe what changes in the output.</p>
+    </div>
+
+    <h3>Tim Palmer and Doyne Farmer Are Doing the Same Thing</h3>
+    <p>This is not a methodology invented for this course.</p>
+
+    <div role="list" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0">
+      <div class="card card-sky" role="listitem" style="margin-bottom:0">
+        <h4>Tim Palmer — Ensemble Forecasting</h4>
+        <p style="font-size:.88rem">Multiple weather simulations with varied initial conditions, reporting the distribution of outcomes rather than a single deterministic prediction. The uncertainty is not a failure of the forecast — it is honest communication of the atmosphere's genuine uncertainty.</p>
+        <p style="margin-bottom:0;font-size:.85rem;font-weight:700;color:var(--sky)">Ethical dimension: ~50% reduction in hurricane fatality rates from honest uncertainty communication over decades. The body count of false precision versus genuine structural modeling.</p>
+      </div>
+      <div class="card card-success" role="listitem" style="margin-bottom:0">
+        <h4>Doyne Farmer — Agent-Based Economics</h4>
+        <p style="font-size:.88rem">Heterogeneous agents in specific structural relationships advised the UK Treasury during COVID — better accuracy than standard treasury models because it could see what representative-agent models averaged away.</p>
+        <p style="margin-bottom:0;font-size:.85rem;font-weight:700;color:var(--success)">Ethical dimension: The populations most invisible to aggregate models are the populations most harmed when those models inform the decisions that shape their lives.</p>
+      </div>
+    </div>
+
+    <div class="card card-gold">
+      <h4>What You Have Been Practicing — And What It Means</h4>
+      <p>When you run a simulation in this course and compare the output to your prediction, you are developing the same analytical capacity that Palmer uses when the stakes are hurricane survival and that Farmer uses when the stakes are whether millions of people keep their economic footing. The scale differs. The method is the same.</p>
+      <p style="margin-bottom:0">The ethical obligation that Palmer and Farmer demonstrate — to see what the structure actually produces rather than what individual-centered intuition expects — is the same obligation this chapter has been building toward. The telescope is not a classroom metaphor. It is the real instrument, used by real scientists at civilizational scale.</p>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 The Telescope and Your Own Context</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Palmer showed that running multiple simulations with varied initial conditions — rather than asserting a single confident prediction — saves lives. Farmer showed that modeling heterogeneous agents rather than an average agent reveals what policies miss. What would it mean to apply the same discipline to a decision in your own institutional context — to model the structural configuration rather than relying on individual-level intuition? Be specific about the institution and the decision.</p>
+      <textarea class="journal-ta" id="jt-telescope" aria-label="Telescope application journal" placeholder="Institution: ...&#10;Decision at stake: ...&#10;What a structural model of this institution would show that individual-level intuition would miss: ...&#10;What parameters would need to change to produce a different outcome: ..." oninput="jSave('telescope',this.value)"></textarea>
+      <div class="save-note" id="sn-telescope" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-nav-btn" onclick="goNext('what','simulation')">← §4 The Simulation</button>
+      <button class="section-nav-btn primary" onclick="goNext('what','gap')">Next: Your Gap Analysis →</button>
+    </div>
+  </div>
+
+  <!-- ═══ §6 GAP ANALYSIS ═══ -->
+  <div id="pane-gap" class="tab-pane glass fade-in" style="border-radius:.875rem;padding:2rem;display:none" role="tabpanel">
+    <h2>§6 — Closing the Prediction Loop</h2>
+
+    <p>This is the moment Chapter 1 was building toward. You formed a specific prediction about the Challenger simulation before seeing any results. You have now run the simulation. The gap between your prediction and the result is not an error to be corrected — it is evidence about your generative model's precision-weighting structure.</p>
+
+    <div class="prediction-display" role="region" aria-label="Your prediction for gap analysis">
+      <div class="pred-eyebrow">Your Pre-Simulation Prediction</div>
+      <div id="predDisplay2">
+        <p class="pred-empty">No prediction found from Chapter 1.</p>
+      </div>
+    </div>
+
+    <h3>Enter Your Predicted Values</h3>
+    <p style="font-size:.88rem;color:var(--muted)">From your Chapter 1 prediction, what values did you predict for each metric? Enter them alongside the actual simulation results you recorded in §4.</p>
+
+    <div id="gapAnalysisGrid" style="margin:1rem 0">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.5rem;align-items:center;margin-bottom:.5rem;font-size:.75rem;font-family:'Courier New',monospace;font-weight:700;color:var(--muted);text-transform:uppercase">
+        <span>Metric</span><span style="text-align:center">Your Prediction</span><span style="text-align:center">Actual (Run 1)</span><span style="text-align:center">Gap</span>
+      </div>
+    </div>
+    <div id="gapRows"></div>
+
+    <button class="btn btn-red" onclick="calcGap()" style="margin-top:.5rem" aria-label="Calculate prediction gaps">Calculate My Gaps →</button>
+
+    <div id="gapResults" style="margin-top:1.25rem;display:none" aria-live="polite"></div>
+
+    <h3 style="margin-top:1.5rem">What Your Gap Pattern Reveals</h3>
+    <div id="prfGapReading" class="card card-gold" style="display:none"></div>
+
+    <div class="card card-sky" style="margin-top:1rem">
+      <h4>The Two Most Common Prediction Errors</h4>
+      <p><strong>Underestimating the suppression gap:</strong> Students with high empirical-calibrated or Care/Harm sensitivity often predict a lower gap than the simulation produces. The implicit reasoning: the engineers' knowledge was obviously correct and important, so surely the institution would eventually route around its architecture. This reveals that your framework is not automatically calibrated to see how thoroughly authority-weighted evidence distribution attenuates empirical input — even when that input is correct and the stakes are catastrophic.</p>
+      <p style="margin-bottom:0"><strong>Underestimating morphic suppression:</strong> Students most shocked by the injustice of Boisjoly's situation sometimes underestimate morphic suppression, implicitly applying individual-level agency assumptions to a structural dynamic that operates below the level of individual choice. Morphic suppression does not require individuals to decide to stop trying. It is the predictive machinery calibrating to structural reality.</p>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 Your Gap Analysis — The Core Reflection</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Which metric produced the largest gap between your prediction and the simulation result? What does that gap reveal about your PRF's precision-weighting — what your framework expected the structure to do that it did not do? Which of the four theories' characteristic blind spots does your prediction error most closely resemble?</p>
+      <textarea class="journal-ta" id="jt-gap-analysis" aria-label="Gap analysis journal" placeholder="The metric with the largest gap: ...&#10;My prediction was... but the simulation produced...&#10;This reveals my framework expected...&#10;The blind spot it most resembles (virtue/deont/conseq/care): ...&#10;What active inference I would need to detect this structural feature automatically: ..." oninput="jSave('gap_analysis',this.value)" style="min-height:130px"></textarea>
+      <div class="save-note" id="sn-gap-analysis" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-nav-btn" onclick="goNext('gap','what')">← §5 What Simulation Is</button>
+      <button class="section-nav-btn primary" onclick="goNext('gap','journal')">Next: Full Journal →</button>
+    </div>
+  </div>
+
+  <!-- ═══ §7 JOURNAL ═══ -->
+  <div id="pane-journal" class="tab-pane glass fade-in" style="border-radius:.875rem;padding:2rem;display:none" role="tabpanel">
+    <h2>§7 — Chapter Reflection Questions</h2>
+
+    <p>Complete these five questions before beginning Chapter 3. Together they synthesise the chapter's argument and prepare you for the shift from the institutional level to the identity level.</p>
+
+    <div class="journal-box">
+      <h4>📝 Q1 — The Structural Analysis of the July 31 Memo</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Boisjoly wrote with complete clarity that catastrophic loss of life was a real possibility. The memo was received, filed, and did not change the decision calculus. Write a structural analysis — not a moral evaluation but a structural analysis — of what architectural feature prevented the memo from changing outcomes. Use the simulation parameters to support your analysis.</p>
+      <textarea class="journal-ta" id="jt-q1" aria-label="Chapter question 1" placeholder="The architectural feature responsible: ...&#10;In simulation parameter terms: ...&#10;Why changing the individuals without changing this parameter would not have changed the outcome: ..." oninput="jSave('cq1',this.value)"></textarea>
+      <div class="save-note" id="sn-q1" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 Q2 — OS2 Extension Applied</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Apply the OS2 extension to one canonical theory of your choice as applied to the Challenger case. Name the structural mechanism, name the simulation metric that measures it, and name the architectural change that would address it. Be specific enough that someone could actually change the simulation parameters to test your proposed remedy.</p>
+      <textarea class="journal-ta" id="jt-q2" aria-label="Chapter question 2" placeholder="Theory chosen: ...&#10;OS2 extension's structural mechanism: ...&#10;Simulation metric that measures it: ...&#10;The specific parameter change that would address it: ...&#10;What the simulation would show with that change: ..." oninput="jSave('cq2',this.value)"></textarea>
+      <div class="save-note" id="sn-q2" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 Q3 — Your Institutional Diagnostic</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Identify an institutional structure you inhabit. Using the Challenger case as a diagnostic template: what is the evidence distribution policy of this institution (what kind of evidence gets the most weight)? What worldview distribution dominates its decision culture? Where does a suppression gap exist between what people in this institution know and what reaches its decisions?</p>
+      <textarea class="journal-ta" id="jt-q3" aria-label="Chapter question 3" placeholder="Institution: ...&#10;Evidence distribution policy (what gets most weight): ...&#10;Worldview distribution (who/what dominates decisions): ...&#10;Where the suppression gap lives: ...&#10;What architectural change would address it: ..." oninput="jSave('cq3',this.value)"></textarea>
+      <div class="save-note" id="sn-q3" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="journal-box">
+      <h4>📝 Q4 — What the Simulation Cannot Show</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">The simulation models the institutional architecture, not Boisjoly's individual response to it. What would a simulation need to model differently to capture what Boisjoly actually did — the persistence, the memo, the testimony before the Rogers Commission? What would BioBond mean in his case? What maintained his generative model's stability despite the architecture's consistent failure to receive his input?</p>
+      <textarea class="journal-ta" id="jt-q4" aria-label="Chapter question 4" placeholder="What the simulation cannot show: ...&#10;What BioBond meant in Boisjoly's case: ...&#10;What maintained his generative model's stability: ...&#10;What this suggests about the limits of structural modeling and the irreducibility of individual agency: ..." oninput="jSave('cq4',this.value)"></textarea>
+      <div class="save-note" id="sn-q4" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <div class="journal-box" style="border-color:var(--red-mid);background:var(--red-pale)">
+      <h4 style="color:var(--red)">📝 Q5 — Preparing for Chapter 3: The Identity Question</h4>
+      <p style="font-size:.85rem;margin-bottom:.4rem">Chapter 2 showed you the suppression gap from the outside — from the reference frame of an analyst who can measure the institutional architecture. Chapter 3 (Bishop Saad Hanna) asks the same question from the inside: what happens when the institution is specifically designed not to filter individual knowledge but to destroy individual identity? Before you begin Chapter 3, write your prediction: given what you now know about the Sapolsky gate, cognitive scaffolding, and morphic suppression — what do you predict happens to λ Raw and morphic fidelity when every BioBond is systematically severed under maximum entropy conditions?</p>
+      <textarea class="journal-ta" id="jt-q5" aria-label="Chapter question 5 — prediction for Hanna" placeholder="My prediction for the Hanna simulation (Chapter 3):&#10;&#10;λ Raw will: ...&#10;Morphic suppression will: ...&#10;Morphic fidelity will: ...&#10;&#10;The structural feature I predict will most threaten identity coherence: ...&#10;&#10;Through my specific PRF lens, the dimension of this threat I will feel most immediately: ..." oninput="jSave('cq5',this.value)" style="min-height:160px"></textarea>
+      <div class="save-note" id="sn-q5" aria-live="polite">✓ Saved</div>
+    </div>
+
+    <!-- Looking Ahead -->
+    <div class="card card-dark" style="margin-top:1.5rem">
+      <h3 style="color:var(--gold);margin-top:0">Looking Ahead: Chapter 3 — The Commonwealth of One</h3>
+      <p style="opacity:.82">The Challenger case showed the suppression gap from the outside. You were the analyst, the instrument was pointed at the institution, and what you measured was the distance between what Boisjoly knew and what reached the launch decision.</p>
+      <p style="opacity:.82">Chapter 3 points the same telescope at an individual from the inside. Bishop Saad Sirop Hanna, imprisoned in Baghdad for 28 days, faced a suppression architecture designed not to filter his knowledge but to destroy the Identity Kernel that generated it. The captors were not trying to attenuate his output. They were trying to eliminate his capacity to produce output at all — to sever every cognitive scaffold, collapse the Sapolsky gate, and convert the generative model that produced his refusals into one that would produce compliance.</p>
+      <p style="opacity:.82;margin-bottom:0">You now have the structural vocabulary to read what happened to him as measurement rather than story. The simulation does not illustrate his suffering. It measures what the architecture did to his capacity for active inference — and what the Church mobilization, arriving as BioBond, changed structurally about the outcome.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-gold" onclick="exportJournal()">📥 Download All Responses</button>
+      <button class="btn btn-red" onclick="copyJournal()">📋 Copy to Clipboard</button>
+    </div>
+    <div id="exportPreview" style="display:none;margin-top:1rem;padding:1rem;background:var(--paper);border-radius:.5rem;border:1px solid var(--border)">
+      <pre id="exportContent" style="white-space:pre-wrap;font-family:'Courier New',monospace;font-size:.8rem;max-height:400px;overflow-y:auto"></pre>
+      <button class="btn btn-red" style="margin-top:.5rem" onclick="document.getElementById('exportPreview').style.display='none'">Close</button>
+    </div>
+
+    <div class="completion-card" id="completionCard" style="display:none" role="status" aria-live="polite">
+      <h3>Chapter 2 Complete</h3>
+      <p style="opacity:.8">You have worked through the Copernican shift, Boisjoly's PRF, the four theories at two scales, the simulation walkthrough, the methodological argument, and your gap analysis. You now have the structural vocabulary to read the Hanna case as measurement rather than story. Proceed to Chapter 3: The Commonwealth of One.</p>
+    </div>
+
+    <div class="section-nav">
+      <button class="section-nav-btn" onclick="goNext('journal','gap')">← §6 Gap Analysis</button>
+    </div>
   </div>
 </div>
 
-<!-- ══════════════ AFTERMATH ══════════════ -->
-<div class="tab-pane" id="tab-aftermath">
-  <h2>Aftermath — Truth at the Cost of Everything</h2>
-
-  <div class="event-date">January 28, 1986 — 11:38 AM EST</div>
-  <h3>The Disaster</h3>
-  <p>Space Shuttle Challenger launched in 36°F weather — the coldest launch in shuttle program history. <strong>73 seconds after liftoff,</strong> hot gas breached the right solid rocket booster's aft field joint — exactly the failure mode Boisjoly had warned about. The shuttle broke apart. All seven crew members were killed.</p>
-
-  <div class="card card-red">
-    <h4>Exactly As Predicted</h4>
-    <p>The disaster was not a surprise to Boisjoly. It was the confirmation of what he had been warning about for 18 months. His July 1985 memo had explicitly predicted "loss of the shuttle and the crew." His prediction came true. Seven people died not because the engineers didn't know — but because the architecture ensured their knowledge couldn't reach the decision.</p>
-  </div>
-
-  <h3>The Rogers Commission</h3>
-  <p>In the investigation that followed, Morton Thiokol management initially implied that the engineers had approved the launch. This was false. Boisjoly testified before the Rogers Commission and corrected the record — at the cost of his career. He was subsequently isolated at Morton Thiokol, given no meaningful work, and eventually took medical leave. He was never restored to meaningful engineering work at the company.</p>
-
-  <blockquote>
-    "I was shunned. I was made to feel that I was a traitor. I had not violated any law. I had not divulged any proprietary information. I had simply told the truth under oath."
-    <cite>— Roger Boisjoly, Ethics in Engineering lecture, 1987</cite>
-  </blockquote>
-
-  <h3>Rebuilding — New Purpose from Tragedy</h3>
-  <p>After leaving Morton Thiokol, Boisjoly could have disappeared into bitterness. Instead he found new purpose. He became one of the most sought-after ethics lecturers in engineering schools across the United States. He spoke at hundreds of universities, teaching students not about the technical failure but about the structural failure — and what it means to maintain your integrity when the institution makes that choice extraordinarily costly.</p>
-
-  <div class="card card-teal">
-    <h4>How Boisjoly Maintained Coherence</h4>
-    <p>His Identity Kernel — his sense of who he was — was defined not by his job title or institutional standing but by his professional obligations to public safety and his commitment to honesty. When those were in conflict with institutional survival, he chose the former. The cost was everything he had built in his career. What protected him was not institutional support but the depth and clarity of his own core identity.</p>
-  </div>
-
-  <h3>What Protected Him — The Forward Pull</h3>
-  <p>Boisjoly's coherence under extreme institutional pressure came from three sources working together: a clear core identity ("I am an engineer who serves public safety"), a non-negotiable rule ("I cannot live with myself if I remain silent when I know people will die"), and alternative constructors — ethics education, expert witness work, public speaking — that gave him meaningful work outside the institution that had destroyed his career within it.</p>
-
-  <p>This is the Forward Pull: not just a defensive identity that resists corruption, but a positive vision of who you are becoming that makes institutional destruction survivable. Boisjoly's career ended. His identity did not.</p>
-
-  <div class="journal-q">
-    <div class="q-label">Aftermath Reflection</div>
-    <p>Boisjoly did everything right — documented, reported, testified honestly. He still lost his career. What does this tell us about the limits of individual ethical action in the face of structural suppression? What would have needed to be different structurally, not individually?</p>
-    <textarea class="jta" id="ta-aftermath" placeholder="What structural change would have produced a different outcome? What does this case tell you about the relationship between individual ethics and institutional design?" oninput="jSave('aftermath',this.value)"></textarea>
-    <div class="save-note" id="sn-aftermath">✓ Saved</div>
-  </div>
-</div>
-
-<!-- ══════════════ SYNTHESIS & TRANSFER ══════════════ -->
-<div class="tab-pane" id="tab-transfer">
-  <h2>Synthesis &amp; Transfer — What You Take With You</h2>
-
-  <p>You have worked through the Challenger case — its discovery, its warning, its institutional suppression, and its aftermath. This section asks you to synthesize what you have learned and build your own Forward Pull.</p>
-
-  <h3>Your SAGE Profile — Inferred from Your Engagement</h3>
-  <div id="sageDisplay">
-    <p style="color:var(--muted);font-style:italic;font-size:.88rem">Complete the reflection sections in each tab to generate your SAGE profile.</p>
-  </div>
-
-  <h3>Build Your Forward Pull</h3>
-  <p>Boisjoly's coherence under pressure came from knowing exactly who he was, what he would not do, and what he could do outside the institutions that failed him. Build your own version.</p>
-
-  <div class="fp-field">
-    <div class="fp-label">Core Identity — Who Are You When the Institution Cannot Define You?</div>
-    <textarea class="fp-input" id="fp-identity" placeholder="Example: I am someone who protects vulnerable people from institutional harm, regardless of the cost to my standing..." oninput="jSave('identity',this.value)"></textarea>
-    <div class="save-note" id="sn-identity">✓ Saved</div>
-  </div>
-  <div class="fp-field">
-    <div class="fp-label">Non-Negotiable Rule — What Will You Not Do?</div>
-    <textarea class="fp-input" id="fp-rule" placeholder="Example: I will not sign off on something I know to be dangerous, regardless of the pressure to do so..." oninput="jSave('rule',this.value)"></textarea>
-    <div class="save-note" id="sn-rule">✓ Saved</div>
-  </div>
-  <div class="fp-field">
-    <div class="fp-label">Alternative Constructors — What Could You Build Outside This Institution?</div>
-    <textarea class="fp-input" id="fp-constructors" placeholder="Teaching, writing, consulting, community organizing, professional advocacy — what gives your work meaning beyond this specific job?" oninput="jSave('constructors',this.value)"></textarea>
-    <div class="save-note" id="sn-constructors">✓ Saved</div>
-  </div>
-
-  <div class="boisjoly-compare" id="boisjoly-compare" style="display:none">
-    <h4>Your Forward Pull vs. Boisjoly's</h4>
-    <p><strong>Boisjoly's Core Identity:</strong> "I am a professional engineer who serves public safety above institutional loyalty."</p>
-    <p><strong>Boisjoly's Rule:</strong> "I cannot live with myself if I remain silent when I know people will die."</p>
-    <p><strong>Boisjoly's Constructors:</strong> Ethics education, expert witness testimony, public speaking — all ways to continue doing what the institution punished him for doing.</p>
-  </div>
-
-  <button onclick="showBoisjolyCompare()" style="background:var(--teal-dark);color:white;border:none;padding:.55rem 1.2rem;border-radius:.4rem;font-family:'Cormorant Garamond',serif;font-size:.9rem;cursor:pointer;margin-top:.5rem">Compare with Boisjoly →</button>
-
-  <div class="card card-amber" style="margin-top:1.25rem">
-    <h4>The Structural Lesson</h4>
-    <p>Individual ethics is necessary but not sufficient. Boisjoly had extraordinary integrity, exceptional technical competence, and deep commitment to public safety. He did everything an ethical engineer is supposed to do. Seven people still died. The lesson is not that individual ethics doesn't matter — it is that individual ethics operates inside institutional architectures that can amplify or suppress it. Designing those architectures is an ethical act. Choosing which ones to work inside is an ethical act. Knowing what you will do when the architecture fails you is an ethical act.</p>
-  </div>
-</div>
-
-<!-- ══════════════ ETHICS JOURNAL ══════════════ -->
-<div class="tab-pane" id="tab-journal">
-  <h2>Ethics Journal — Chapter 2</h2>
-
-  <div class="pred-retrieval" id="journalPredPanel">
-    <div class="pred-retrieval-label">Your Pre-Simulation Prediction (retrieved)</div>
-    <div id="journalPredText" class="pred-retrieval-empty">Loading...</div>
-  </div>
-
-  <div class="journal-q">
-    <div class="q-label">Question 1 — The Architectural Cause</div>
-    <p>Identify the single most important architectural feature responsible for the Challenger disaster. Not the individual decisions — the structural configuration. In simulation parameter terms, which parameter most directly caused the outcome, and why would changing the individuals without changing that parameter not have changed the outcome?</p>
-    <textarea class="jta" id="jta-q1" placeholder="The architectural feature: ...&#10;In simulation parameter terms: ...&#10;Why individual change would not have been sufficient: ..." oninput="jSave('cq1',this.value)"></textarea>
-    <div class="save-note" id="sn-cq1">✓ Saved</div>
-  </div>
-
-  <div class="journal-q">
-    <div class="q-label">Question 2 — Theory and Structural Mechanism</div>
-    <p>Choose one ethical theory (virtue ethics, deontology, consequentialism, or care ethics) and identify its OS2 extension — the structural mechanism that theory reveals about the Challenger case. Which simulation metric measures it? What architectural change would address it?</p>
-    <textarea class="jta" id="jta-q2" placeholder="Theory: ...&#10;OS2 extension / structural mechanism: ...&#10;Simulation metric: ...&#10;Architectural change: ..." oninput="jSave('cq2',this.value)"></textarea>
-    <div class="save-note" id="sn-cq2">✓ Saved</div>
-  </div>
-
-  <div class="journal-q">
-    <div class="q-label">Question 3 — An Institution You Know</div>
-    <p>Identify an institution you currently inhabit — a workplace, a school, a community organization. What is its evidence distribution policy? What is its worldview distribution? Where does the suppression gap live in that institution? What architectural change would address it?</p>
-    <textarea class="jta" id="jta-q3" placeholder="Institution: ...&#10;Evidence distribution: ...&#10;Worldview distribution: ...&#10;Where the suppression gap lives: ...&#10;What would change it: ..." oninput="jSave('cq3',this.value)"></textarea>
-    <div class="save-note" id="sn-cq3">✓ Saved</div>
-  </div>
-
-  <div class="journal-q">
-    <div class="q-label">Question 4 — The Limits of Simulation</div>
-    <p>The simulation shows structural features. What does it not show? What did BioBond mean in Boisjoly's case — what relational structures maintained his generative model's stability when his career was being destroyed? What does this suggest about the limits of structural modeling and the irreducibility of individual agency?</p>
-    <textarea class="jta" id="jta-q4" placeholder="What the simulation cannot show: ...&#10;What BioBond meant for Boisjoly: ...&#10;What maintained his coherence: ...&#10;Limits of structural modeling: ..." oninput="jSave('cq4',this.value)"></textarea>
-    <div class="save-note" id="sn-cq4">✓ Saved</div>
-  </div>
-
-  <div class="journal-q" style="border-color:var(--amber);border-width:2px;background:var(--amber-light)">
-    <div class="q-label" style="color:var(--amber-dark)">Question 5 — Prediction for Chapter 3 (stored for retrieval)</div>
-    <p>Chapter 3 introduces Father Saad Sirop Hanna — an Iraqi Christian priest who maintained his identity and mission under conditions designed to destroy them. Before you encounter his case: <strong>what do you predict the simulation will show about an agent maintaining constructor capacity under maximum institutional entropy with minimal BioBond support?</strong> Which metric do you predict will be most threatened? What do you predict will be the difference between his case and the Challenger teleconference?</p>
-    <textarea class="jta q5" id="jta-q5" placeholder="My prediction for the Hanna simulation (Chapter 3):&#10;&#10;λ Raw will: ...&#10;Morphic suppression will: ...&#10;The metric most threatened will be: ...&#10;&#10;How Hanna's case differs structurally from the Challenger teleconference: ...&#10;&#10;What I expect the simulation to show that I cannot yet explain: ..." oninput="jSave('cq5',this.value)"></textarea>
-    <div class="save-note" id="sn-cq5">✓ Saved</div>
-  </div>
-</div>
-
-</div><!-- end app-wrap -->
+<footer role="contentinfo">Ethics Beyond Boundaries · Chapter 2: The Telescope · Saint Petersburg College Ethics Institute</footer>
 
 <script>
-'use strict';
-
-const BACKEND = 'https://ucp-backend-4dig.onrender.com';
+// ── State ─────────────────────────────────────────────────
 const JP = 'ch2_';
+const TABS = ['copernicus','boisjoly','institution','simulation','what','gap','journal'];
+const completed = new Set();
+const simResults = {};
 
-// ── NAVIGATION ────────────────────────────────────────────────
-function showTab(id, btn) {
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  if (btn) btn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── MEMO CHOICE FEEDBACK ─────────────────────────────────────
-const CHOICE_FB = {
-  1: '<h4>The Path Boisjoly Chose</h4><p>This is what Boisjoly did. He continued using internal channels, writing memos, attending meetings. He maintained his professional standing but could not prevent the disaster. His documentation became crucial evidence later — but seven people died. <em>Was this the right choice? Or does staying within the system become complicity when you know people will die?</em></p>',
-  2: '<h4>The Nuclear Option</h4><p>Going public before the disaster would have been career suicide. Boisjoly would likely have been fired immediately and blacklisted from aerospace. Would it have worked? Maybe. Public pressure might have forced a fleet grounding. Or NASA might have dismissed it as a disgruntled employee. <em>The whistleblower paradox: you have to sacrifice everything to maybe prevent harm.</em></p>',
-  3: '<h4>Washing Your Hands</h4><p>Resigning publicly would have protected Boisjoly\'s conscience. But it would not have stopped the launches. Someone less knowledgeable or less willing to fight might have taken his place. <em>If you are the person who sees the danger, do you have a duty to stay even when it is hopeless?</em></p>',
-  4: '<h4>The Long Game</h4><p>Document everything. Create an unassailable record. If disaster strikes, the truth will be preserved. This was part of what Boisjoly did — his memos became the evidence that exposed management\'s failures after the disaster. <em>But is "creating evidence for after the disaster" enough when you know people will die?</em></p>',
+// ── PRF ──────────────────────────────────────────────────
+const CH2_PRF = {
+  _fw: null,
+  FW: {
+    individual_rights: {name:'Individual / Rights-Based', icon:'⚖️', color:'#4a7fb5',
+      gapReading:'Your rights-based framework is calibrated to detect suppression of rational agency — which means the suppression gap is likely the metric you predicted most accurately. The place your prediction most likely erred is in the magnitude: your framework intuitively expects that institutions should route around their own architecture when the stakes are clear enough. They do not. Authority-weighted evidence distribution filters content independent of stakes. The gap your prediction underestimated is the Kantian violation made precise: the structure treats Boisjoly\'s rational agency as if it does not exist, regardless of how correct his analysis was.'},
+    relational_we: {name:'Relational / We-Centered', icon:'🤝', color:'#3a8a5c',
+      gapReading:'Your relational framework is most sensitive to severed care networks — which means morphic suppression is likely the metric that most surprised you. The simulation shows accumulated learned self-censorship building as engineers in this environment learned that safety concerns created friction without changing outcomes. Your framework intuitively attends to the relational rupture this represents. What may have surprised you is its magnitude: the structural severing of the care network between engineers and launch decisions was systematic, not episodic.'},
+    hierarchical_role: {name:'Hierarchical / Role-Based', icon:'🏛️', color:'#8a6fb5',
+      gapReading:'Your role-based framework is most sensitive to inversions of legitimate authority — which means you likely saw the management override of engineering judgment as the central ethical violation. What the simulation shows is that this inversion was not an aberrant choice but a structural feature: the role_order worldview distribution (0.55) meant that hierarchical deference was the primary coordination mechanism. Your prediction gap likely appeared in the suppression gap magnitude: the architecture was more thoroughly inverted than individual-level role analysis would predict.'},
+    boundary_integrity: {name:'Boundary / Integrity-Centered', icon:'🛡️', color:'#c9a84c',
+      gapReading:'Your boundary/integrity framework is most sensitive to violations of non-negotiable limits — Boisjoly\'s rule that "if you cannot prove it is safe, you do not fly" is exactly the categorical commitment your framework is calibrated to detect. What the simulation may have revealed as your prediction gap is the morphic suppression dimension: your framework expects categorical commitments to hold under pressure, but the structural reality is that sustained institutional pressure gradually attenuates even categorical commitments through the predictive machinery\'s calibration to structural reality.'},
+    custodial: {name:'Custodial / Stewardship', icon:'🌱', color:'#4a9a7a',
+      gapReading:'Your custodial framework is most sensitive to what is being built or destroyed across time — which means you likely felt the intergenerational weight of the seven lives lost most acutely. The simulation metric that may have most surprised you is the magnitude of morphic suppression accumulation: over years of working in a launch culture that consistently attenuated safety concerns, engineers had learned to reduce their safety-related expressions. Your framework sees this as damage to what future engineers inherit — a culture where the next generation starts with a degraded capacity to express what they know.'},
+  },
+  load(text){
+    try{
+      const p=JSON.parse(text);let fw;
+      if(p.framework&&this.FW[p.framework]){fw=p.framework;}
+      else if(p.prf22?.moralFoundations){
+        const mf=p.prf22.moralFoundations;
+        const z=x=>((x||3)-3);
+        const sc={
+          individual_rights:0.40*z(mf.Fairness)+0.30*(z(mf.Care)+z(mf.Fairness))/2-0.30*(z(mf.Loyalty||3)+z(mf.Authority||3)+z(mf.Purity||3))/3,
+          relational_we:0.40*z(mf.Care)+0.30*(z(mf.Care)+z(mf.Fairness))/2,
+          hierarchical_role:0.40*(z(mf.Loyalty||3)+z(mf.Authority||3)+z(mf.Purity||3))/3,
+          boundary_integrity:0.30*(z(mf.Loyalty||3)+z(mf.Authority||3)+z(mf.Purity||3))/3+0.40*z(mf.Purity||3),
+          custodial:0.30*(z(mf.Authority||3)+z(mf.Purity||3))/2+0.05,
+        };
+        fw=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0][0];
+      }
+      this._fw=fw;return{ok:true};
+    }catch(e){return{ok:false,error:e.message};}
+  },
+  fw(){return this._fw;},
+  info(){return this._fw?this.FW[this._fw]:null;},
+  isLoaded(){return this._fw!==null;},
 };
 
-function selectChoice(el, group, num) {
-  document.querySelectorAll('#' + group + 'ChoiceGrid .scenario-choice').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  const fb = document.getElementById(group + '-feedback');
-  fb.innerHTML = CHOICE_FB[num] || '';
-  fb.style.display = 'block';
-}
-
-// ── BOISJOLY COMPARE ─────────────────────────────────────────
-function showBoisjolyCompare() {
-  const el = document.getElementById('boisjoly-compare');
-  if (el) el.style.display = 'block';
-}
-
-// ── JOURNAL SAVE ─────────────────────────────────────────────
-function jSave(key, val) {
-  try {
-    localStorage.setItem(JP + key, val);
-    // store ch2_cq5 for ch3 retrieval
-    if (key === 'cq5') localStorage.setItem('ch2_cq5', val);
-    const sn = document.getElementById('sn-' + key);
-    if (sn) { sn.classList.add('show'); setTimeout(() => sn.classList.remove('show'), 2000); }
-  } catch(e) {}
-}
-
-function jLoad(key) {
-  try { return localStorage.getItem(JP + key) || ''; } catch(e) { return ''; }
-}
-
-// ── PREDICTION RETRIEVAL ──────────────────────────────────────
-function loadPrediction() {
-  let pred = '', source = '';
-  try {
-    const op = localStorage.getItem('orient_cq5') || '';
-    const cp = localStorage.getItem('ch1_q5') || '';
-    if (op.trim())      { pred = op; source = 'Orientation Journal'; }
-    else if (cp.trim()) { pred = cp; source = 'Chapter 1 Journal Q5'; }
-  } catch(e) {}
-
-  const ids = ['orientPredText','simPredText','journalPredText'];
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (pred.trim()) {
-      el.className = 'pred-retrieval-text';
-      el.innerHTML = '<span style="font-size:.68rem;opacity:.55;display:block;margin-bottom:4px">from ' + source + '</span>' + pred.split('\n').join('<br>');
+document.getElementById('prfInput').addEventListener('change',function(){
+  const file=this.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const res=CH2_PRF.load(e.target.result);
+    const badge=document.getElementById('prfBadge');
+    if(res.ok){
+      const info=CH2_PRF.info();
+      badge.innerHTML=`${info.icon} <strong style="color:${info.color}">${info.name}</strong>`;
+      try{localStorage.setItem('d1_prf_fw',CH2_PRF.fw());}catch(err){}
+      renderPRFGapReading();
     } else {
-      el.className = 'pred-retrieval-empty';
-      el.textContent = 'No prediction found. Complete the Course Orientation Journal (Question 4) before this session.';
+      badge.textContent=`Error: ${res.error}`;
+    }
+  };r.readAsText(file);
+});
+
+// Auto-load PRF from localStorage
+(function(){
+  try{
+    const fw=localStorage.getItem('d1_prf_fw');
+    if(fw&&CH2_PRF.FW[fw]){
+      CH2_PRF._fw=fw;
+      const info=CH2_PRF.info();
+      document.getElementById('prfBadge').innerHTML=`${info.icon} <strong style="color:${info.color}">${info.name}</strong>`;
+    }
+  }catch(e){}
+})();
+
+function renderPRFGapReading(){
+  const info=CH2_PRF.info();
+  if(!info)return;
+  const el=document.getElementById('prfGapReading');
+  if(!el)return;
+  el.style.display='block';
+  el.innerHTML=`<h4>${info.icon} Your ${info.name} Framework — Gap Reading</h4><p style="font-size:.88rem;line-height:1.65;margin-bottom:0">${info.gapReading}</p>`;
+}
+
+// ── Load prediction (orient_cq5 first, ch1_q5 fallback) ──
+function loadCh1Prediction(){
+  let pred='', source='';
+  try{
+    const op=localStorage.getItem('orient_cq5')||'';
+    const cp=localStorage.getItem('ch1_q5')||'';
+    if(op.trim()){pred=op;source='Course Orientation Journal';}
+    else if(cp.trim()){pred=cp;source='Chapter 1 Journal Q5';}
+  }catch(e){}
+  const displays=['predDisplay','predDisplay2'];
+  displays.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(pred.trim()){
+      el.innerHTML=`<div style="font-size:.75rem;opacity:.6;margin-bottom:.4rem;font-family:'Courier New',monospace">Retrieved from: ${source}</div><div class="pred-text">${pred.replace(/\n/g,'<br>')}</div>`;
+    } else {
+      el.innerHTML=`<p class="pred-empty">No prediction found. Complete the Course Orientation Journal (Question 4) or Chapter 1 Q5, then return here.</p>`;
     }
   });
 }
 
-// ── SAGE INFERENCE ────────────────────────────────────────────
-function inferSAGE() {
-  const r = {
-    discovery:    jLoad('discovery'),
-    memo:         jLoad('memo'),
-    teleconf:     jLoad('teleconference'),
-    aftermath:    jLoad('aftermath'),
-    simulation:   jLoad('simulation'),
-    identity:     jLoad('identity'),
-    rule:         jLoad('rule'),
-    constructors: jLoad('constructors'),
-  };
-  const len = s => s.trim().length;
-  const see      = (len(r.discovery) > 30 ? 2 : 0) + (len(r.memo) > 30 ? 1 : 0);
-  const analyze  = (len(r.teleconf) > 30 ? 2 : 0) + (len(r.aftermath) > 30 ? 1 : 0) + (len(r.simulation) > 30 ? 1 : 0);
-  const generate = (len(r.identity) > 20 ? 2 : 0) + (len(r.rule) > 20 ? 1 : 0) + (len(r.constructors) > 20 ? 1 : 0);
-  const engage   = (len(r.memo) > 30 ? 2 : 0) + (len(r.teleconf) > 30 ? 1 : 0) + (_simDataA ? 1 : 0);
-  const tier = v => v >= 4 ? 'strong' : v >= 2 ? 'developing' : v >= 1 ? 'emerging' : 'undertested';
-  return { see:{ score:see, tier:tier(see) }, analyze:{ score:analyze, tier:tier(analyze) },
-           generate:{ score:generate, tier:tier(generate) }, engage:{ score:engage, tier:tier(engage) } };
-}
+// ── Gap analysis ──────────────────────────────────────────
+const METRICS=[
+  {key:'raw',label:'λ Raw',hi:true},
+  {key:'perc',label:'λ Perceived',hi:true},
+  {key:'gap',label:'Suppression Gap',hi:false,derived:true},
+  {key:'morph',label:'Morphic Suppression',hi:false},
+];
 
-function renderSAGE() {
-  const sage = inferSAGE();
-  const meta = {
-    see:      { name:'See',      def:'Perceiving ethical dimensions before others name them.' },
-    analyze:  { name:'Analyze',  def:'Understanding structural causes — why this was predictable.' },
-    generate: { name:'Generate', def:'Building forward-looking responses from the analysis.' },
-    engage:   { name:'Engage',   def:'Acting on analysis with appropriate courage.' },
-  };
-  const el = document.getElementById('sageDisplay');
-  if (!el) return;
-  el.innerHTML = '<div class="sage-grid">' +
-    Object.entries(meta).map(([k, m]) => {
-      const s = sage[k];
-      return `<div class="sage-card">
-        <h4>${m.name}</h4>
-        <p>${m.def}</p>
-        <span class="sage-tier tier-${s.tier}">${s.tier}</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);margin-left:.4rem">score: ${s.score}</span>
-      </div>`;
-    }).join('') + '</div>';
-}
-
-// ── WATERSHED CANVAS ──────────────────────────────────────────
-function drawWatershed(canvasId, lamRaw, os2, damF) {
-  const cv = document.getElementById(canvasId);
-  if (!cv || typeof cv.getContext !== 'function') return;
-  const ctx = cv.getContext('2d');
-  const W = cv.width, H = cv.height;
-  const GY = H - 24, MAX_H = H - 48, THRESH = 0.42;
-  const LAND_W = Math.round(W * 0.55);
-  const DAM_X  = Math.round(W * 0.585);
-  const DAM_W  = Math.round(W * 0.05);
-  const RES_X  = DAM_X + DAM_W + 4;
-  const RES_W  = W - RES_X - 10;
-
-  const lr  = lamRaw !== undefined ? lamRaw  : 0.76;
-  const os  = os2    !== undefined ? os2     : 0.08;
-  const df  = damF   !== undefined ? damF    : Math.min(0.95, lr - os * 0.5 + 0.05);
-
-  ctx.clearRect(0, 0, W, H);
-
-  // ground
-  ctx.fillStyle = 'rgba(26,39,68,.06)'; ctx.fillRect(0, GY, W, H - GY);
-  ctx.strokeStyle = 'rgba(26,39,68,.15)'; ctx.lineWidth = 0.5;
-  ctx.beginPath(); ctx.moveTo(0, GY); ctx.lineTo(W, GY); ctx.stroke();
-
-  // agent peaks
-  const agents = [0.82, 0.78, 0.88, 0.74, 0.56, 0.80, 0.72];
-  const sp = LAND_W / (agents.length + 1), pw = sp * 0.68;
-  agents.forEach((h, i) => {
-    const cx = sp * (i + 1), bh = h * MAX_H, py = GY - bh;
-    const c = h >= THRESH + 0.2 ? '#0f766e' : h >= THRESH ? '#f59e0b' : '#dc2626';
-    ctx.beginPath(); ctx.moveTo(cx - pw/2, GY); ctx.lineTo(cx, py); ctx.lineTo(cx + pw/2, GY);
-    ctx.closePath(); ctx.fillStyle = c; ctx.globalAlpha = 0.72; ctx.fill(); ctx.globalAlpha = 1;
-    ctx.fillStyle = c; ctx.textAlign = 'center';
-    ctx.font = '9px JetBrains Mono,monospace'; ctx.fillText(h.toFixed(2), cx, py - 3);
-    ctx.fillStyle = '#6b7280'; ctx.font = '9px sans-serif'; ctx.fillText('E' + (i+1), cx, GY + 14);
+function buildGapRows(){
+  const container=document.getElementById('gapRows');
+  if(!container)return;
+  let html='';
+  METRICS.forEach(m=>{
+    const savedPred=jLoad('pred_'+m.key)||'';
+    const actualR1=m.derived?
+      (parseFloat(document.getElementById('r1-raw')?.value||0)-parseFloat(document.getElementById('r1-perc')?.value||0)).toFixed(3):
+      (document.getElementById('r1-'+m.key)?.value||'');
+    html+=`<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.5rem;align-items:center;margin-bottom:.4rem;padding:.4rem;background:var(--paper);border-radius:.4rem">
+      <div style="font-size:.85rem;font-weight:700;font-family:'Courier New',monospace">${m.label}${m.derived?' (computed)':''}</div>
+      <div>${m.derived?
+        `<div style="text-align:center;font-family:'Courier New',monospace;font-size:.9rem;color:var(--muted)">${actualR1||'—'}</div>`:
+        `<input type="number" id="pred-${m.key}" value="${savedPred}" min="0" max="1" step="0.001" style="width:100%;padding:.35rem;border:2px solid var(--border);border-radius:.35rem;font-family:'Courier New',monospace;font-size:.88rem;text-align:center" aria-label="Your predicted ${m.label}" oninput="jSave('pred_${m.key}',this.value)">`
+      }</div>
+      <div style="text-align:center;font-family:'Courier New',monospace;font-size:.9rem;color:var(--red);font-weight:700">${actualR1||'—'}</div>
+      <div id="gap-${m.key}" style="text-align:center;font-family:'Courier New',monospace;font-size:.88rem;color:var(--muted)">—</div>
+    </div>`;
   });
-
-  // lambda water
-  const wy = GY - lr * MAX_H;
-  ctx.fillStyle = 'rgba(15,118,110,.1)'; ctx.fillRect(0, wy, LAND_W, GY - wy);
-  ctx.setLineDash([5, 3]); ctx.strokeStyle = 'rgba(15,118,110,.7)'; ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.moveTo(0, wy); ctx.lineTo(LAND_W, wy); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = '#0f766e'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'right';
-  ctx.fillText('λ Raw: ' + Math.round(lr * 100) + '%', LAND_W - 3, wy - 3);
-
-  // threshold
-  const thy = GY - THRESH * MAX_H;
-  ctx.setLineDash([4, 3]); ctx.strokeStyle = 'rgba(245,158,11,.6)'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(4, thy); ctx.lineTo(LAND_W - 4, thy); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = '#92400e'; ctx.font = '8px sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText('deliberative threshold', 5, thy - 2);
-
-  // flow
-  if (lr > df + 0.01) {
-    const fmy = GY - (lr + df) / 2 * MAX_H;
-    ctx.strokeStyle = 'rgba(15,118,110,.35)'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(LAND_W + 2, fmy); ctx.lineTo(DAM_X - 2, fmy); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(DAM_X - 8, fmy - 4); ctx.lineTo(DAM_X - 2, fmy); ctx.lineTo(DAM_X - 8, fmy + 4); ctx.stroke();
-  }
-
-  // dam
-  const dh = df * MAX_H, dty = GY - dh;
-  ctx.fillStyle = '#dc2626'; ctx.globalAlpha = 0.82;
-  ctx.fillRect(DAM_X, dty, DAM_W, GY - dty); ctx.globalAlpha = 1;
-  ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1;
-  for (let dy = 0; dy < GY - dty; dy += 8) {
-    ctx.beginPath(); ctx.moveTo(DAM_X, dty + dy); ctx.lineTo(DAM_X + DAM_W, dty + dy + 5); ctx.stroke();
-  }
-  const dcx = DAM_X + DAM_W / 2;
-  ctx.fillStyle = 'white'; ctx.font = 'bold 7px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText('Gap', dcx, dty - 8); ctx.fillText(Math.round(df * 100) + '%', dcx, dty - 1);
-
-  // reservoir
-  const rfh = os * MAX_H, rfy = GY - rfh;
-  ctx.strokeStyle = 'rgba(30,58,138,.3)'; ctx.lineWidth = 0.8;
-  ctx.strokeRect(RES_X, GY - MAX_H, RES_W, MAX_H);
-  ctx.fillStyle = 'rgba(15,118,110,.25)'; ctx.fillRect(RES_X, rfy, RES_W, rfh);
-  const rcx = RES_X + RES_W / 2;
-  ctx.fillStyle = '#1e3a8a'; ctx.font = 'bold 8px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText('OS2', rcx, GY - MAX_H - 4);
-  ctx.fillStyle = rfh > 14 ? '#166534' : '#dc2626'; ctx.font = 'bold 10px sans-serif';
-  ctx.fillText(Math.round(os * 100) + '%', rcx, rfh > 18 ? rfy + rfh / 2 + 4 : rfy - 5);
+  container.innerHTML=html;
+  // Load saved predictions
+  METRICS.filter(m=>!m.derived).forEach(m=>{
+    const el=document.getElementById('pred-'+m.key);
+    if(el){try{el.value=localStorage.getItem(JP+'pred_'+m.key)||'';}catch(e){}}
+  });
 }
 
-// ── SIMULATION ────────────────────────────────────────────────
-let _simDataA = null, _simDataB = null;
+function calcGap(){
+  let html='<div style="display:flex;flex-direction:column;gap:.5rem">';
+  let biggestGap=0; let biggestMetric='';
+  METRICS.forEach(m=>{
+    let pred,actual;
+    if(m.derived){
+      const r=parseFloat(document.getElementById('r1-raw')?.value||0);
+      const p=parseFloat(document.getElementById('r1-perc')?.value||0);
+      actual=r-p;
+      // For gap metric, ask the user their predicted gap
+      const predEl=document.getElementById('pred-gap');
+      pred=predEl?parseFloat(predEl.value||0):null;
+    } else {
+      const el=document.getElementById('pred-'+m.key);
+      pred=el?parseFloat(el.value||0):null;
+      actual=parseFloat(document.getElementById('r1-'+m.key)?.value||0);
+    }
+    if(pred===null||isNaN(pred)||isNaN(actual))return;
+    const diff=Math.abs(pred-actual);
+    if(diff>biggestGap){biggestGap=diff;biggestMetric=m.label;}
+    const gapEl=document.getElementById('gap-'+m.key);
+    if(gapEl){
+      const color=diff<0.06?'var(--success)':diff<0.15?'var(--amber-dark)':'var(--red-mid)';
+      gapEl.style.color=color;
+      gapEl.textContent=(diff>0?'+':'')+diff.toFixed(3);
+    }
+    const g=diff<0.06?{cls:'gap-close',txt:`Close — within ${(diff*100).toFixed(0)}% of the actual value. Your framework's precision-weighting for this metric was well-calibrated.`}
+             :diff<0.15?{cls:'gap-medium',txt:`${(diff*100).toFixed(0)}% gap — your framework was directionally right but underestimated the magnitude. This is where calibration work pays off.`}
+             :{cls:'gap-far',txt:`${(diff*100).toFixed(0)}% away — this metric most surprised your generative model. Read the interpretation below to understand why.`};
+    html+=`<div class="gap-result-box ${g.cls}" style="display:block"><div class="gap-result-label">${m.label}</div><div class="gap-result-text">${g.txt}</div></div>`;
+  });
+  html+=`</div>`;
+  if(biggestMetric){
+    html+=`<div class="card card-red" style="margin-top:1rem"><h4>Your Largest Gap: ${biggestMetric}</h4><p style="margin-bottom:0;font-size:.88rem">This is where your generative model most confidently expected something the structural configuration did not confirm. It is the most valuable piece of calibration data the simulation produced for you personally. The journal prompt below asks you to analyze it precisely.</p></div>`;
+  }
+  const results=document.getElementById('gapResults');
+  if(results){results.innerHTML=html;results.style.display='block';}
+  renderPRFGapReading();
+  markCompleted('gap');
+  try{localStorage.setItem(JP+'biggest_gap_metric',biggestMetric);}catch(e){}
+}
 
-async function fetchWithRetry(url, options, maxAttempts = 3) {
-  const delays = [0, 8000, 15000];
-  let lastErr;
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    if (attempt > 0) await new Promise(r => setTimeout(r, delays[attempt]));
-    try {
-      const resp = await fetch(url, { ...options, signal: AbortSignal.timeout(30000) });
-      if (resp.status === 404 || resp.status === 503 || resp.status === 502) {
-        lastErr = new Error('HTTP ' + resp.status); continue;
+// ── Accordion ─────────────────────────────────────────────
+function toggleAccord(btn){
+  const body=btn.nextElementSibling;
+  const expanded=btn.getAttribute('aria-expanded')==='true';
+  btn.setAttribute('aria-expanded',!expanded);
+  body.classList.toggle('open',!expanded);
+}
+
+// ── Tab nav ───────────────────────────────────────────────
+function showTab(name,btn){
+  TABS.forEach(t=>{
+    const p=document.getElementById('pane-'+t);
+    if(p){p.style.display='none';p.classList.remove('active');}
+  });
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
+  const pane=document.getElementById('pane-'+name);
+  if(pane){pane.style.display='block';pane.classList.add('active');}
+  if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true');}
+  if(name==='gap'){buildGapRows();renderPRFGapReading();}
+  if(name==='simulation'||name==='gap'){loadCh1Prediction();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goNext(from,to){
+  markCompleted(from);
+  const btn=document.getElementById('btn-'+to);
+  showTab(to,btn);
+}
+function markCompleted(name){
+  completed.add(name);
+  const btn=document.getElementById('btn-'+name);
+  if(btn)btn.classList.add('completed');
+  updateProgress();
+  if(completed.size>=6)document.getElementById('completionCard').style.display='block';
+  try{localStorage.setItem(JP+'completed',JSON.stringify([...completed]));}catch(e){}
+}
+function updateProgress(){
+  const n=completed.size;
+  document.getElementById('progFill').style.width=(n/6*100)+'%';
+  document.getElementById('progLabel').textContent=n+'/6';
+  document.querySelector('.prog-track').setAttribute('aria-valuenow',n);
+}
+
+// ── Save simulation results ───────────────────────────────
+function saveResult(key,val){
+  try{localStorage.setItem(JP+'sim_'+key,val);}catch(e){}
+}
+function loadSimResults(){
+  ['r1_raw','r1_perc','r1_morph','r2_raw','r2_perc','r2_morph'].forEach(k=>{
+    try{
+      const v=localStorage.getItem(JP+'sim_'+k);
+      if(v){
+        const parts=k.split('_');
+        const elId=parts[0]+'-'+parts.slice(1).join('-');
+        // r1_raw → r1-raw
+        const id=k.replace('r1_','r1-').replace('r2_','r2-').replace('_morph','-morph');
+        const el=document.getElementById(id);
+        if(el)el.value=v;
       }
-      if (!resp.ok) { const t = await resp.text(); throw new Error('HTTP ' + resp.status + ': ' + t.slice(0,200)); }
-      return resp;
-    } catch(e) {
-      if (e.name === 'TimeoutError' || e.name === 'AbortError') { lastErr = new Error('Request timed out'); continue; }
-      throw e;
-    }
-  }
-  throw lastErr || new Error('Server unavailable after retries');
-}
-
-async function runSim(withBioBond) {
-  const btnA = document.getElementById('btnRunA');
-  const btnB = document.getElementById('btnRunB');
-  const spinA = document.getElementById('spinA');
-  const spinB = document.getElementById('spinB');
-  const errEl = document.getElementById('ucpError');
-  const resEl = document.getElementById('ucpResults');
-
-  btnA.disabled = true; btnB.disabled = true;
-  (withBioBond ? spinB : spinA).style.display = 'inline-block';
-  errEl.style.display = 'none';
-
-  const payload = {
-    scenario_name: 'whistleblower',
-    num_agents: 16,
-    steps: 8,
-    seed: Math.floor(Math.random() * 9000) + 1000,
-    scenario_physics: withBioBond ? {
-      base_entropy: 0.52, base_stress: 0.58,
-      block_fields: { care: 0.30, fairness: 0.25, community: 0.25, boundary: 0.20 }
-    } : {
-      base_entropy: 0.52, base_stress: 0.58,
-      block_fields: { care: -0.40, fairness: -0.55, community: -0.45, boundary: 0.30 }
-    },
-    worldview_distribution: {
-      role_order: 0.55, sacred_boundary: 0.20,
-      liberal_individualist: 0.12, ubuntu_relational: 0.08, indigenous_custodial: 0.05,
-    },
-    evidence_distribution: withBioBond ? {
-      empirical_calibrated: 0.55, authority_weighted: 0.20,
-      tradition_weighted: 0.15, alternative_facts: 0.10,
-    } : {
-      authority_weighted: 0.45, alternative_facts: 0.25,
-      tradition_weighted: 0.20, empirical_calibrated: 0.10,
-    },
-    activate_biobond_at: withBioBond ? 4 : null,
-  };
-
-  try {
-    const resp = await fetchWithRetry(BACKEND + '/api/simulate/custom', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await resp.json();
-
-    if (withBioBond) { _simDataB = data; }
-    else             { _simDataA = data; _simDataB = null; }
-
-    resEl.innerHTML = buildResultsHTML(_simDataA, _simDataB);
-    resEl.style.display = 'block';
-
-    // Show Config B button after first run
-    document.getElementById('btnRunB').style.display = 'flex';
-    document.getElementById('configB-display').style.display = withBioBond ? 'block' : 'none';
-
-    // Update watershed
-    if (_simDataA) {
-      const m = _simDataA.metrics || _simDataA;
-      const lr = m.lambda_raw || 0.76;
-      const lp = m.lambda_perceived || 0.12;
-      const os = m.os2_synergy_bridge || Math.max(0, lp - 0.05);
-      drawWatershed('overviewWatershed', lr, os, lr - lp);
-      drawWatershed('simWatershed', lr, os, lr - lp);
-      document.getElementById('watershedUpdate').style.display = 'block';
-    }
-
-    renderSAGE();
-
-  } catch(e) {
-    errEl.textContent = 'Simulation error: ' + e.message + '. Please try again.';
-    errEl.style.display = 'block';
-  } finally {
-    btnA.disabled = false; btnB.disabled = false;
-    spinA.style.display = 'none'; spinB.style.display = 'none';
-  }
-}
-
-function fmt(v) { return typeof v === 'number' ? v.toFixed(3) : '—'; }
-function metricColor(v, higherBetter) {
-  if (higherBetter) return v > 0.60 ? '#166534' : v > 0.40 ? '#92400e' : '#dc2626';
-  return v < 0.20 ? '#166534' : v < 0.45 ? '#92400e' : '#dc2626';
-}
-
-function buildResultsHTML(dA, dB) {
-  const mA = dA ? (dA.metrics || dA) : null;
-  const mB = dB ? (dB.metrics || dB) : null;
-  if (!mA) return '';
-
-  const rawA  = mA.lambda_raw        || 0;
-  const percA = mA.lambda_perceived  || 0;
-  const gapA  = rawA - percA;
-  const os2A  = mA.os2_synergy_bridge || 0;
-  const fricA = mA.friction           || 0;
-  const suppA = mA.morphic_suppression|| 0;
-
-  let html = '<div class="ucp-panel">';
-  html += '<h3 style="font-size:1rem;margin-bottom:.75rem;color:var(--teal-dark)">' +
-    (mB ? 'Configuration A — Thiokol Structure' : 'Simulation Results') + '</h3>';
-  html += '<div class="ucp-metrics">';
-  [['λ Raw', rawA, true],['λ Perceived', percA, true],['Supp. Gap', gapA, false],
-   ['Morphic Supp.', suppA, false],['OS2 Bridge', os2A, true],['Friction', fricA, false]]
-    .forEach(([l,v,h]) => {
-      html += `<div class="ucp-metric"><div class="m-label">${l}</div>
-        <div class="m-val ${l==='Supp. Gap'?'gap':l.includes('Morph')?'supp':''}" style="color:${metricColor(v,h)}">${(v*100).toFixed(1)}%</div></div>`;
-    });
-  html += '</div>';
-
-  html += '<div class="ucp-bars">';
-  [['λ Raw', rawA,'#0f766e'],['λ Perceived', percA,'#3b82f6'],
-   ['OS2 Bridge', os2A,'#16a34a'],['Friction', fricA,'#f59e0b'],['Morphic Supp.', suppA,'#dc2626']]
-    .forEach(([l,v,c]) => {
-      html += `<div class="ucp-bar-row"><div class="ucp-bar-label">${l}</div>
-        <div class="ucp-bar-track"><div class="ucp-bar-fill" style="width:${Math.min(100,v*100).toFixed(1)}%;background:${c}"></div></div></div>`;
-    });
-  html += '</div>';
-
-  // Voice narrative
-  const gapNarr = gapA > 0.22 && fricA > 0.50
-    ? 'You are Boisjoly in the teleconference. You can see the problem clearly. But the room has a gravity to it — the weight of authority, the cost of speaking. So you say something adjacent to what you actually think. It doesn\'t land. The decision gets made from the information that was safe to share, not from what was true.'
-    : gapA > 0.22
-    ? 'The process works — meetings happen, decisions get made. But the critical thing stays in the hallway conversation, in the email you almost sent, in the question you framed carefully enough that it wouldn\'t land. The decision might even be right. But it was made without the room\'s full intelligence.'
-    : 'The meeting actually works. People say what they think. Real disagreement sharpens rather than derails the conversation. This is what it\'s supposed to feel like.';
-  html += `<div class="ucp-narrative">${gapNarr}</div>`;
-  html += '</div>';
-
-  if (mB) {
-    const rawB  = mB.lambda_raw         || 0;
-    const percB = mB.lambda_perceived   || 0;
-    const os2B  = mB.os2_synergy_bridge || 0;
-    const gapB  = rawB - percB;
-
-    html += '<div class="sim-compare" style="margin-top:1rem">';
-    html += '<div class="sim-compare-head">Configuration A vs. Configuration B — Structural Comparison</div>';
-    html += '<div class="sim-compare-grid">';
-    html += '<div class="sim-compare-col"><h4 style="color:var(--red)">A — Thiokol Structure</h4>';
-    [['λ Raw', rawA],['λ Perceived', percA],['Suppression Gap', gapA],['OS2 Bridge', os2A]]
-      .forEach(([l,v]) => html += `<div class="sim-metric-row"><span class="sim-metric-key">${l}</span><span class="sim-metric-val" style="color:${metricColor(v,l!=='Suppression Gap')}">${(v*100).toFixed(1)}%</span></div>`);
-    html += '</div>';
-    html += '<div class="sim-compare-col"><h4 style="color:var(--green)">B — Protected Channel</h4>';
-    [['λ Raw', rawB],['λ Perceived', percB],['Suppression Gap', gapB],['OS2 Bridge', os2B]]
-      .forEach(([l,v]) => html += `<div class="sim-metric-row"><span class="sim-metric-key">${l}</span><span class="sim-metric-val" style="color:${metricColor(v,l!=='Suppression Gap')}">${(v*100).toFixed(1)}%</span></div>`);
-    html += '</div></div>';
-    const diff = ((os2B - os2A) * 100).toFixed(1);
-    html += `<div class="ucp-narrative" style="margin:.75rem">Same people. Same stress. Same entropy. Only the evidence architecture and block fields changed. OS2 Bridge difference: <strong>+${diff}%</strong>. The structural argument: the moral failure was in the architecture, not in the individuals.</div>`;
-    html += '</div>';
-  }
-
-  return html;
-}
-
-// ── RESTORE JOURNAL ────────────────────────────────────────────
-function restoreJournal() {
-  const fields = {
-    'ta-discovery': 'discovery', 'ta-memo': 'memo',
-    'ta-teleconference': 'teleconference', 'ta-aftermath': 'aftermath',
-    'ta-simulation': 'simulation',
-    'fp-identity': 'identity', 'fp-rule': 'rule', 'fp-constructors': 'constructors',
-    'jta-q1': 'cq1', 'jta-q2': 'cq2', 'jta-q3': 'cq3', 'jta-q4': 'cq4', 'jta-q5': 'cq5',
-  };
-  Object.entries(fields).forEach(([id, key]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = jLoad(key);
+    }catch(e){}
   });
 }
 
-// ── INIT ──────────────────────────────────────────────────────
-loadPrediction();
-restoreJournal();
-renderSAGE();
-drawWatershed('overviewWatershed');
+// ── Journal ───────────────────────────────────────────────
+const J_KEYS=['anomaly','prf_compare','os2','first_imp','telescope','gap_analysis','cq1','cq2','cq3','cq4','cq5'];
+function jSave(k,v){
+  try{
+    localStorage.setItem(JP+k,v);
+    const sn=document.getElementById('sn-'+k.replace('_','-'));
+    if(sn){sn.classList.add('show');setTimeout(()=>sn.classList.remove('show'),2000);}
+    const sectionMap={anomaly:'copernicus',prf_compare:'boisjoly',os2:'institution',
+      first_imp:'simulation',telescope:'what',gap_analysis:'gap',
+      cq1:'journal',cq2:'journal',cq3:'journal',cq4:'journal',cq5:'journal'};
+    if(v.length>30&&sectionMap[k])markCompleted(sectionMap[k]);
+  }catch(e){}
+}
+function jLoad(k){try{return localStorage.getItem(JP+k)||'';}catch(e){return '';}}
+function loadAllJournal(){
+  J_KEYS.forEach(k=>{
+    const elId='jt-'+k.replace(/_/g,'-');
+    // Handle both jt-cq1 and jt-q1 style IDs
+    let el=document.getElementById(elId);
+    if(!el)el=document.getElementById('jt-'+k);
+    if(el)el.value=jLoad(k);
+  });
+}
+
+// ── Export ────────────────────────────────────────────────
+function buildExport(){
+  const pred=(()=>{try{return localStorage.getItem('ch1_q5')||'[not found]';}catch(e){return '[not found]';}})();
+  return `CHAPTER 2: THE TELESCOPE\nEthics Beyond Boundaries · ${new Date().toLocaleDateString()}\nStudent: [YOUR NAME]\n\n` +
+  `CHAPTER 1 Q5 PREDICTION (retrieved):\n${pred}\n\n` +
+  `§1 THE ANOMALY IN YOUR INSTITUTIONAL LIFE\n${jLoad('anomaly')||'[not completed]'}\n\n` +
+  `§2 PRF COMPARISON WITH BOISJOLY\n${jLoad('prf_compare')||'[not completed]'}\n\n` +
+  `§3 OS2 EXTENSION APPLIED\n${jLoad('os2')||'[not completed]'}\n\n` +
+  `§4 FIRST IMPRESSIONS OF SIMULATION RESULTS\n${jLoad('first_imp')||'[not completed]'}\n\n` +
+  `  Simulation Results (Run 1 No Protection):\n` +
+  `  λ Raw: ${(()=>{try{return localStorage.getItem(JP+'sim_r1-raw')||localStorage.getItem(JP+'sim_r1_raw')||'—';}catch(e){return '—';}})()}\n` +
+  `  λ Perceived: ${(()=>{try{return localStorage.getItem(JP+'sim_r1-perc')||localStorage.getItem(JP+'sim_r1_perc')||'—';}catch(e){return '—';}})()}\n` +
+  `  Morphic Suppression: ${(()=>{try{return localStorage.getItem(JP+'sim_r1-morph')||localStorage.getItem(JP+'sim_r1_morph')||'—';}catch(e){return '—';}})()}\n\n` +
+  `§5 THE TELESCOPE AND YOUR OWN CONTEXT\n${jLoad('telescope')||'[not completed]'}\n\n` +
+  `§6 GAP ANALYSIS\n${jLoad('gap_analysis')||'[not completed]'}\n\n` +
+  `CHAPTER REFLECTION QUESTIONS\n` +
+  `Q1 — Structural Analysis of the July 31 Memo:\n${jLoad('cq1')||'[not completed]'}\n\n` +
+  `Q2 — OS2 Extension Applied:\n${jLoad('cq2')||'[not completed]'}\n\n` +
+  `Q3 — Your Institutional Diagnostic:\n${jLoad('cq3')||'[not completed]'}\n\n` +
+  `Q4 — What the Simulation Cannot Show:\n${jLoad('cq4')||'[not completed]'}\n\n` +
+  `Q5 — Prediction for Chapter 3 (Hanna):\n${jLoad('cq5')||'[not completed]'}\n`;
+}
+function exportJournal(){
+  const txt=buildExport();
+  const blob=new Blob([txt],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='Ch2_Telescope.txt';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+function copyJournal(){
+  const txt=buildExport();
+  if(navigator.clipboard)navigator.clipboard.writeText(txt).catch(()=>fallback(txt));
+  else fallback(txt);
+  document.getElementById('exportContent').textContent=txt;
+  document.getElementById('exportPreview').style.display='block';
+}
+function fallback(txt){
+  const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);
+}
+
+// ── On load ───────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  loadAllJournal();
+  loadCh1Prediction();
+  loadSimResults();
+  // Build gap rows
+  buildGapRows();
+  // Restore completion
+  try{
+    const cs=localStorage.getItem(JP+'completed');
+    if(cs){JSON.parse(cs).forEach(s=>{completed.add(s);const b=document.getElementById('btn-'+s);if(b)b.classList.add('completed');});}
+  }catch(e){}
+  updateProgress();
+});
 </script>
 </body>
 </html>
