@@ -979,6 +979,13 @@ const PRF = {
   getFrameworkName() { return this._framework ? this.FW_META[this._framework]?.name || '' : ''; },
   getFrameworkIcon() { return this._framework ? this.FW_META[this._framework]?.icon || '' : ''; },
   getFrameworkColor(){ return this._framework ? this.FW_META[this._framework]?.color || '#888' : '#888'; },
+  fw()     { return this._framework || 'individual_rights'; },
+  fwName() { return this.getFrameworkName(); },
+  fwIcon() { return this.getFrameworkIcon(); },
+  fwColor(){ return this.getFrameworkColor(); },
+  tier()   { return this._atcfTier || 'medium'; },
+  getCPFC(){ return this._cpfc; },
+  getATCFTier(){ return this._atcfTier || 'medium'; },
   getATCFTier() { return this._atcfTier; },
   getCPFC()     { return this._cpfc; },
 
@@ -2291,8 +2298,8 @@ async function fetchWithRetry(url, options, maxAttempts=3) {
         throw new Error(`HTTP ${resp.status}: ${txt.slice(0,200)}`);
       }
       // Success — reset error style
-      const errEl = document.getElementById('ucpError');
-      if (errEl) { errEl.style.display='none'; errEl.style.background=''; errEl.style.borderColor=''; errEl.style.color=''; }
+      const successErrEl = document.getElementById('ucpError');
+      if (successErrEl) { successErrEl.style.display='none'; successErrEl.style.background=''; successErrEl.style.borderColor=''; successErrEl.style.color=''; }
       return resp;
     } catch(e) {
       if (e.name === 'TimeoutError' || e.name === 'AbortError') {
@@ -2590,7 +2597,7 @@ function loadChallPrediction() {
 // ── Watershed mini-visualization ─────────────────────────────
 function drawChallWatershed(lamRaw, os2Bridge, suppGap) {
   const cv = document.getElementById('challWatershed');
-  if (!cv) return;
+  if (!cv || typeof cv.getContext !== 'function') return;
   const ctx = cv.getContext('2d');
   const W = cv.width, H = cv.height;
   const GY = H - 22, MAX_H = H - 44, THRESH = 0.42;
@@ -2691,7 +2698,9 @@ function restoreInputs() {
     if (el) el.value = loadSaved(key);
   });
   loadChallPrediction();
-  drawChallWatershed();
+  // Only draw watershed if canvas is present in current tab
+  const wshCv = document.getElementById('challWatershed');
+  if (wshCv && typeof wshCv.getContext === 'function') drawChallWatershed();
 }
 
 
